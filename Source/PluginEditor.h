@@ -30,7 +30,9 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     SimpleFmAudioProcessor& audioProcessor;
-    
+    //every slider /other control needs to have an attachment
     juce::Slider cAttackSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> caAttach;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)
 };

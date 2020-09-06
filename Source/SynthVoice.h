@@ -20,6 +20,10 @@ public:
     {
         return dynamic_cast<SynthSound*>(sound) != nullptr;
     }
+    void getCAttack(std::atomic<float>* attack)
+    {
+        carrierEnv.setAttack(*attack);
+    }
     //========================================
     void startNote (int midiNoteNumber,
                     float velocity,

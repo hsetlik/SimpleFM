@@ -23,7 +23,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     cAttackSlider.setValue(25.0);
     cAttackSlider.addListener(this);
     addAndMakeVisible(&cAttackSlider);
-    
+    caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "cAttack", cAttackSlider));
     
 }
 

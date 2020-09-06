@@ -148,6 +148,14 @@ bool SimpleFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 
 void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    for(int i = 0; i < thisSynth.getNumVoices(); ++i)
+    {
+        //yes that is supposed to be a single '='
+        if((thisVoice =  dynamic_cast<SynthVoice*>(thisSynth.getVoice(i))))
+        {
+            thisVoice->getCAttack(tree.getRawParameterValue("cAttack"));
+        }
+    }
     buffer.clear();
     thisSynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
