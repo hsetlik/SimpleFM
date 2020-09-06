@@ -16,25 +16,25 @@ OperatorPanel::OperatorPanel()
     aSlider.setSliderStyle(juce::Slider::Rotary);
     aSlider.setRange(0.0, 4000.0);
     aSlider.setValue(25.0);
-    envelope->setAttack(25.0);
+    //envelope->setAttack(25.0);
     
     addAndMakeVisible(dSlider);
     dSlider.setSliderStyle(juce::Slider::Rotary);
     dSlider.setRange(0.0, 4000.0);
     dSlider.setValue(75.0);
-    envelope->setDecay(75.0);
+    //envelope->setDecay(75.0);
     
     addAndMakeVisible(sSlider);
     sSlider.setSliderStyle(juce::Slider::Rotary);
     sSlider.setRange(0.0, 1.0);
     sSlider.setValue(0.45);
-    envelope->setSustain(0.45);
+    //envelope->setSustain(0.45);
     
     addAndMakeVisible(rSlider);
     rSlider.setSliderStyle(juce::Slider::Rotary);
     rSlider.setRange(0.0, 4000.0);
     rSlider.setValue(25.0);
-    envelope->setRelease(25.0);
+    //envelope->setRelease(25.0);
     
     setBounds(0, 0, 600, 200);
 }
@@ -61,3 +61,9 @@ void OperatorPanel::sliderValueChanged(juce::Slider *slider)
         envelope->setRelease(rSlider.getValue());
 }
 //==================================================
+
+OperatorVoice::OperatorVoice()
+{
+    
+}
+

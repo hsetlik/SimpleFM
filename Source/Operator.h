@@ -41,9 +41,9 @@ class OperatorVoice : public juce::SynthesiserVoice
     void startNote (int midiNoteNumber,
                     float velocity,
                     juce::SynthesiserSound *sound,
-                    int currentPitchWheelPosition);
+                    int currentPitchWheelPosition){}
     
-    void stopNote (float velocity, bool allowTailOff);
+    void stopNote (float velocity, bool allowTailOff){}
     
     void pitchWheelMoved(int newPitchWheelVal)
     {
@@ -61,14 +61,14 @@ class OperatorVoice : public juce::SynthesiserVoice
     {
         
     }
-    void renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples);
+    void renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples){}
     //these two are public bc the GUI needs to point to them
     maxiOsc thisOsc;
     maxiEnv thisEnv;
 private:
     bool isModulated;
-    maxiEnv* modEnv; //this points to the ouput sample of another Operator
-    float modDepth; //between 0 and 1 coefficient for the modEnv
+    maxiEnv* modEnv; //this points to the ouput sample of another OperatorVoice
+    float modDepth; //coefficient between 0 and 1 for the modEnv
     int modFactor; // above 1, fundamental *= modFactor, below 0, fundamental /= (modFactor * -1)
     double fundamental; //pitch straight from MIDI number
     double frequency; //post-modulation pitch

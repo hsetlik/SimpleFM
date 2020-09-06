@@ -25,6 +25,7 @@ public:
                     juce::SynthesiserSound *sound,
                     int currentPitchWheelPosition)
     {
+        //newPanel.envelope = &env1;
         env1.trigger = 1;
         level = velocity;
         fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
@@ -64,10 +65,7 @@ public:
     {
         for(int sample = 0; sample < numSamples; ++sample) //calculate all the samples for this block
         {
-            env1.setAttack(800);
-            env1.setDecay(1500);
-            env1.setSustain(0.6);
-            env1.setRelease(2000);
+            
             float thisSample = osc1.sinewave(fundamental);
             float envSample = env1.adsr(thisSample, env1.trigger) * level;
             //calculate a sample for each channel
@@ -89,4 +87,5 @@ private:
     double fundamental;
     maxiOsc osc1;
     maxiEnv env1;
+    //OperatorPanel newPanel;
 };
