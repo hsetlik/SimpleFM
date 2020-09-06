@@ -11,6 +11,9 @@
 #pragma once
 #include <JuceHeader.h>
 #include <stdio.h>
+#if ! JUCE_PROJUCER_LIVE_BUILD
+#include "maximilian.h"
+#endif
 
 class SynthSound : public juce::SynthesiserSound
 {
