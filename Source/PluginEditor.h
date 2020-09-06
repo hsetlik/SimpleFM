@@ -49,6 +49,11 @@ private:
     juce::Slider mReleaseSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mrAttach;
     
+    juce::Slider indexSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> iAttach;
+    juce::Slider factorSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
+    
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)

@@ -68,6 +68,8 @@ public:
     float mSustainLevel = 0.4f;
     float mReleaseTime = 25.0f;
     
+    double fIndex = 80.0;
+    double fFactor = 1.0;
 
 private:
     juce::Synthesiser thisSynth;

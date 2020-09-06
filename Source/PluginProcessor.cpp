@@ -33,6 +33,13 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
                ("mSustain", "Sustain", 0.0f, 1.0f, 0.6f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
                ("mRelease", "Release", 0.1f, 4000.0f, 250.0f));
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("index", "Mod Index", 0.0f, 250.0f, 100.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("factor", "Mod Factor", -10.0f, 10.0f, 1.0f));
+    
+    
     return layout;
 }
 
@@ -180,6 +187,9 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
             thisVoice->getMDecay(tree.getRawParameterValue("mDecay"));
             thisVoice->getMSustain(tree.getRawParameterValue("mSustain"));
             thisVoice->getMRelease(tree.getRawParameterValue("mRelease"));
+            
+            thisVoice->getIndexVal(tree.getRawParameterValue("index"));
+            thisVoice->getFactorVal(tree.getRawParameterValue("factor"));
         }
     }
     buffer.clear();

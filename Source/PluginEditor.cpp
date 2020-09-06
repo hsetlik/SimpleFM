@@ -15,7 +15,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (800, 600);
+    setSize (600, 400);
     //set up GUI stuff below here
     cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
     cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
@@ -81,8 +81,21 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     addAndMakeVisible(&mReleaseSlider);
     mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mRelease", mReleaseSlider));
     
-
+    indexSlider.setSliderStyle(juce::Slider::Rotary);
+    indexSlider.setRange(1.0, 250.0);
+    indexSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    indexSlider.setValue(100.0);
+    indexSlider.addListener(this);
+    addAndMakeVisible(&indexSlider);
+    iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "index", indexSlider));
     
+    factorSlider.setSliderStyle(juce::Slider::Rotary);
+    factorSlider.setRange(-10.0, 10.0);
+    factorSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    factorSlider.setValue(1.0);
+    factorSlider.addListener(this);
+    addAndMakeVisible(&factorSlider);
+    fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "factor", factorSlider));
 }
 
 SimpleFmAudioProcessorEditor::~SimpleFmAudioProcessorEditor()
@@ -109,6 +122,9 @@ void SimpleFmAudioProcessorEditor::resized()
     mDecaySlider.setBounds(270, 20, 40, 100);
     mSustainSlider.setBounds(320, 20, 40, 100);
     mReleaseSlider.setBounds(370, 20, 40, 100);
+    
+    indexSlider.setBounds(100, 150, 40, 60);
+    factorSlider.setBounds(200, 150, 40, 60);
 }
 
 void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
@@ -137,6 +153,12 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
     }else if(slider == &mReleaseSlider)
     {
         audioProcessor.mReleaseTime = mReleaseSlider.getValue();
+    } else if(slider == &indexSlider)
+    {
+        audioProcessor.fIndex = indexSlider.getValue();
+    } else if(slider == &factorSlider)
+    {
+        audioProcessor.fFactor = factorSlider.getValue();
     }
     
 }

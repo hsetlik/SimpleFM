@@ -53,6 +53,19 @@ public:
     {
         modulatorEnv.setRelease(*release);
     }
+    void getIndexVal(std::atomic<float>* iVal)
+    {
+        modIndex = *iVal;
+    }
+    void getFactorVal(std::atomic<float>* fVal)
+    {
+        float rawValue = *fVal;
+        if(rawValue > 0)
+            modFactor = rawValue;
+        else
+            modFactor = (1.0 / fabs(rawValue));
+        
+    }
     
     //========================================
     void startNote (int midiNoteNumber,
@@ -66,6 +79,7 @@ public:
         modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
         printf("mod pitch: %f\n", modulatorPitch);
+        /*
         carrierEnv.setAttack(150);
         carrierEnv.setDecay(1500);
         carrierEnv.setSustain(0.7);
@@ -75,6 +89,7 @@ public:
         modulatorEnv.setDecay(1200);
         modulatorEnv.setSustain(0.4);
         modulatorEnv.setRelease(800);
+         */
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
@@ -135,7 +150,7 @@ private:
     maxiOsc modulatorOsc;
     maxiEnv carrierEnv;
     maxiEnv modulatorEnv;
-    float modFactor = (1.0 / 4.0); // modulator frequency = fundamental * modFactor
+    float modFactor; // modulator frequency = fundamental * modFactor
     double modulatorPitch;
-    double modIndex = 85.0;
+    double modIndex;
 };
