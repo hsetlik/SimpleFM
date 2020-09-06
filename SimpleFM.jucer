@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="jUz8gi" name="SimpleFM" projectType="audioplug" useAppConfig="0"
+              addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
+              pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
+              headerPath="/Users/hayden/Desktop/Programming/Maximilian/Maximilian/src">
+  <MAINGROUP id="Ax74qE" name="SimpleFM">
+    <GROUP id="{BE32745E-5A34-0691-C8A8-D3437CBFECD0}" name="Source">
+      <GROUP id="{4F1A466B-7B37-A2E1-2890-3DD4275FBEAC}" name="Maximilian_bits">
+        <GROUP id="{02D0C198-0ADD-98E1-6C76-4D880EC0D932}" name="src">
+          <GROUP id="{30E56192-D7B6-C2ED-F5CA-46F7A6EB3C9F}" name="libs">
+            <FILE id="nTTWGc" name="fft.cpp" compile="1" resource="0" file="../../Maximilian_bits/src/libs/fft.cpp"/>
+            <FILE id="fem29y" name="fft.h" compile="0" resource="0" file="../../Maximilian_bits/src/libs/fft.h"/>
+            <FILE id="FEvteK" name="maxiFFT.cpp" compile="1" resource="0" file="../../Maximilian_bits/src/libs/maxiFFT.cpp"/>
+            <FILE id="s9M8bB" name="maxiFFT.h" compile="0" resource="0" file="../../Maximilian_bits/src/libs/maxiFFT.h"/>
+            <FILE id="cbUblu" name="maxiMFCC.cpp" compile="1" resource="0" file="../../Maximilian_bits/src/libs/maxiMFCC.cpp"/>
+            <FILE id="yBAAov" name="maxiMFCC.h" compile="0" resource="0" file="../../Maximilian_bits/src/libs/maxiMFCC.h"/>
+            <FILE id="sFeRja" name="sineTable.h" compile="0" resource="0" file="../../Maximilian_bits/src/libs/sineTable.h"/>
+          </GROUP>
+          <FILE id="oE3JsA" name="maximilian.cpp" compile="1" resource="0" file="../../Maximilian_bits/src/maximilian.cpp"/>
+          <FILE id="eNnzh4" name="maximilian.h" compile="0" resource="0" file="../../Maximilian_bits/src/maximilian.h"/>
+        </GROUP>
+      </GROUP>
+      <FILE id="P7O3wh" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="aY0alB" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="OKyzP7" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="ydsjl7" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="ozDAyg" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
+      <FILE id="mP5yo1" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" targetName="SimpleFM" headerPath="/Users/hayden/Desktop/Programming/Maximilian_bits/src"/>
+        <CONFIGURATION isDebug="0" name="Release" targetName="SimpleFM"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+</JUCERPROJECT>
