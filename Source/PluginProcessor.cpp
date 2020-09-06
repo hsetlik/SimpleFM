@@ -9,6 +9,40 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cAttack", "Attack", 0.1f, 4000.0f, 1.0f));
+            // identifier, name, minimum Value, maximumValue, default value
+    //use more layout.add calls to add more parameters
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cDecay", "Decay", 0.1f, 4000.0f, 55.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cSustain", "Sustain", 0.0f, 1.0f, 0.6f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cRelease", "Release", 0.1f, 4000.0f, 250.0f));
+    //now for the modulator envelope
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mAttack", "Attack", 0.1f, 4000.0f, 1.0f));
+            // identifier, name, minimum Value, maximumValue, default value
+    //use more layout.add calls to add more parameters
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mDecay", "Decay", 0.1f, 4000.0f, 55.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mSustain", "Sustain", 0.0f, 1.0f, 0.6f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mRelease", "Release", 0.1f, 4000.0f, 250.0f));
+    
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("index", "Mod Index", 0.0f, 250.0f, 100.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("factor", "Mod Factor", -10.0f, 10.0f, 1.0f));
+    
+    
+    return layout;
+}
+
 //==============================================================================
 SimpleFmAudioProcessor::SimpleFmAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -19,10 +53,11 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        //Putting stuff into the valueTree
+        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout())
 #endif
 {
-    thisSynth.clearVoices();
     for(int i = 0; i < 6; ++i)
     {
         thisSynth.addVoice(new SynthVoice());
@@ -137,6 +172,26 @@ bool SimpleFmAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts)
 
 void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
+    for(int i = 0; i < thisSynth.getNumVoices(); ++i)
+    {
+        //yes that is supposed to be a single '='
+        if((thisVoice =  dynamic_cast<SynthVoice*>(thisSynth.getVoice(i))))
+        {
+            //call the callbacks for all the parameters
+            thisVoice->getCAttack(tree.getRawParameterValue("cAttack"));
+            thisVoice->getCDecay(tree.getRawParameterValue("cDecay"));
+            thisVoice->getCSustain(tree.getRawParameterValue("cSustain"));
+            thisVoice->getCRelease(tree.getRawParameterValue("cRelease"));
+            
+            thisVoice->getMAttack(tree.getRawParameterValue("mAttack"));
+            thisVoice->getMDecay(tree.getRawParameterValue("mDecay"));
+            thisVoice->getMSustain(tree.getRawParameterValue("mSustain"));
+            thisVoice->getMRelease(tree.getRawParameterValue("mRelease"));
+            
+            thisVoice->getIndexVal(tree.getRawParameterValue("index"));
+            thisVoice->getFactorVal(tree.getRawParameterValue("factor"));
+        }
+    }
     buffer.clear();
     thisSynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }

@@ -55,6 +55,21 @@ public:
     //==============================================================================
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    juce::AudioProcessorValueTreeState tree;
+    
+    float cAttackTime = 25.0f;
+    float cDecayTime = 25.0f;
+    float cSustainLevel = 0.4f;
+    float cReleaseTime = 25.0f;
+    
+    float mAttackTime = 25.0f;
+    float mDecayTime = 25.0f;
+    float mSustainLevel = 0.4f;
+    float mReleaseTime = 25.0f;
+    
+    double fIndex = 80.0;
+    double fFactor = 1.0;
 
 private:
     juce::Synthesiser thisSynth;
