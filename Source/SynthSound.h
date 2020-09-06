@@ -10,6 +10,7 @@
 
 #pragma once
 #include <JuceHeader.h>
+#include <stdio.h>
 
 class SynthSound : public juce::SynthesiserSound
 {
