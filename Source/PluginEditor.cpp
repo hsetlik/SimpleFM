@@ -52,6 +52,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     mAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
     mAttackSlider.setRange(0.1, 4000.0);
     mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    mAttackSlider.setNumDecimalPlacesToDisplay(1);
     mAttackSlider.setValue(0.4);
     mAttackSlider.addListener(this);
     addAndMakeVisible(&mAttackSlider);
@@ -63,6 +64,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     mDecaySlider.setValue(0.4);
     mDecaySlider.addListener(this);
     addAndMakeVisible(&mDecaySlider);
+    mDecaySlider.setNumDecimalPlacesToDisplay(1);
     mdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mDecay", mDecaySlider));
     
     mSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
@@ -70,6 +72,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
     mSustainSlider.setValue(0.4);
     mSustainSlider.addListener(this);
+    mSustainSlider.setNumDecimalPlacesToDisplay(1);
     addAndMakeVisible(&mSustainSlider);
     msAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mSustain", mSustainSlider));
     
@@ -79,6 +82,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     mReleaseSlider.setValue(0.4);
     mReleaseSlider.addListener(this);
     addAndMakeVisible(&mReleaseSlider);
+    mReleaseSlider.setNumDecimalPlacesToDisplay(1);
     mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mRelease", mReleaseSlider));
     
     indexSlider.setSliderStyle(juce::Slider::Rotary);
@@ -87,6 +91,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     indexSlider.setValue(100.0);
     indexSlider.addListener(this);
     addAndMakeVisible(&indexSlider);
+    indexSlider.setNumDecimalPlacesToDisplay(1);
     iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "index", indexSlider));
     
     factorSlider.setSliderStyle(juce::Slider::Rotary);
@@ -95,6 +100,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     factorSlider.setValue(1.0);
     factorSlider.addListener(this);
     addAndMakeVisible(&factorSlider);
+    factorSlider.setNumDecimalPlacesToDisplay(1);
     fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "factor", factorSlider));
 }
 
