@@ -15,7 +15,16 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (800, 600);
+    //set up GUI stuff below here
+    cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
+    cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+    cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    cAttackSlider.setValue(25.0);
+    cAttackSlider.addListener(this);
+    addAndMakeVisible(&cAttackSlider);
+    
+    
 }
 
 SimpleFmAudioProcessorEditor::~SimpleFmAudioProcessorEditor()
@@ -28,13 +37,19 @@ void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
 
-    g.setColour (juce::Colours::white);
-    g.setFont (15.0f);
-    g.drawFittedText ("Hello World!", getLocalBounds(), juce::Justification::centred, 1);
+  
 }
 
 void SimpleFmAudioProcessorEditor::resized()
 {
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
+    cAttackSlider.setBounds(20, 20, 40, 100);
+}
+
+void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
+{
+    if(slider == &cAttackSlider)
+    {
+        audioProcessor.cAttackTime = cAttackSlider.getValue();
+    }
+    
 }

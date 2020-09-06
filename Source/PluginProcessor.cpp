@@ -9,6 +9,16 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cAttack", "Attack", 0.1f, 4000.0f, 1.0f));
+            // identifier, name, minimum Value, maximumValue
+    //use more layout.add calls to add more parameters
+    return layout;
+}
+
 //==============================================================================
 SimpleFmAudioProcessor::SimpleFmAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -19,10 +29,11 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                       #endif
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ),
+        //Putting stuff into the valueTree
+        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout())
 #endif
 {
-    thisSynth.clearVoices();
     for(int i = 0; i < 6; ++i)
     {
         thisSynth.addVoice(new SynthVoice());

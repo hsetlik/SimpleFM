@@ -28,7 +28,6 @@ public:
     {
         carrierEnv.trigger = 1;
         modulatorEnv.trigger = 1;
-        level = velocity;
         fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
         modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
@@ -97,7 +96,6 @@ public:
     }
     //===============================================
 private:
-    double level;
     double fundamental;
     maxiOsc carrierOsc;
     maxiOsc modulatorOsc;
