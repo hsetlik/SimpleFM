@@ -9,3 +9,17 @@
 */
 
 #pragma once
+#include <JuceHeader.h>
+
+class SynthSound : public juce::SynthesiserSound
+{
+public:
+    bool appliesToNote(int /*midiNoteNumber*/) //just plays this sound for any midi note
+    {
+        return true;
+    }
+    bool appliesToChannel(int /*midiChannel*/) //plays the sound on both channels
+    {
+        return true;
+    }
+};
