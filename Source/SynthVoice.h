@@ -24,6 +24,19 @@ public:
     {
         carrierEnv.setAttack(*attack);
     }
+    void getCDecay(std::atomic<float>* decay)
+    {
+        carrierEnv.setDecay(*decay);
+    }
+    void getCSustain(std::atomic<float>* sustain)
+    {
+        carrierEnv.setSustain(*sustain);
+    }
+    void getCRelease(std::atomic<float>* release)
+    {
+        carrierEnv.setRelease(*release);
+    }
+    
     //========================================
     void startNote (int midiNoteNumber,
                     float velocity,

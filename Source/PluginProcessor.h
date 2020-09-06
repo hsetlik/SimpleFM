@@ -59,6 +59,9 @@ public:
     juce::AudioProcessorValueTreeState tree;
     
     float cAttackTime = 25.0f;
+    float cDecayTime = 25.0f;
+    float cSustainLevel = 0.4f;
+    float cReleaseTime = 25.0f;
     
 
 private:

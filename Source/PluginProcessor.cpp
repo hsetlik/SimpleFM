@@ -14,8 +14,14 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     layout.add(std::make_unique<juce::AudioParameterFloat>
                ("cAttack", "Attack", 0.1f, 4000.0f, 1.0f));
-            // identifier, name, minimum Value, maximumValue
+            // identifier, name, minimum Value, maximumValue, default value
     //use more layout.add calls to add more parameters
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cDecay", "Decay", 0.1f, 4000.0f, 55.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cSustain", "Sustain", 0.0f, 1.0f, 0.6f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("cRelease", "Release", 0.1f, 4000.0f, 250.0f));
     return layout;
 }
 
@@ -153,7 +159,11 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         //yes that is supposed to be a single '='
         if((thisVoice =  dynamic_cast<SynthVoice*>(thisSynth.getVoice(i))))
         {
+            //call the callbacks for all the parameters
             thisVoice->getCAttack(tree.getRawParameterValue("cAttack"));
+            thisVoice->getCDecay(tree.getRawParameterValue("cDecay"));
+            thisVoice->getCSustain(tree.getRawParameterValue("cSustain"));
+            thisVoice->getCRelease(tree.getRawParameterValue("cRelease"));
         }
     }
     buffer.clear();
