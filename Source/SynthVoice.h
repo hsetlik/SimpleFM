@@ -26,16 +26,28 @@ public:
                     juce::SynthesiserSound *sound,
                     int currentPitchWheelPosition)
     {
-        env1.trigger = 1;
+        carrierEnv.trigger = 1;
+        modulatorEnv.trigger = 1;
         level = velocity;
         fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+        modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
-        printf("note with midi no. %d is on \n", midiNoteNumber);
+        printf("mod pitch: %f\n", modulatorPitch);
+        carrierEnv.setAttack(150);
+        carrierEnv.setDecay(1500);
+        carrierEnv.setSustain(0.7);
+        carrierEnv.setRelease(900);
+        
+        modulatorEnv.setAttack(1600);
+        modulatorEnv.setDecay(1200);
+        modulatorEnv.setSustain(0.4);
+        modulatorEnv.setRelease(800);
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
     {
-        env1.trigger = 0;
+        carrierEnv.trigger = 0;
+        modulatorEnv.trigger = 0;
         allowTailOff = true;
         if(velocity == 0)
             clearCurrentNote();
@@ -65,16 +77,15 @@ public:
     {
         for(int sample = 0; sample < numSamples; ++sample) //calculate all the samples for this block
         {
-            env1.setAttack(800);
-            env1.setDecay(1500);
-            env1.setSustain(0.6);
-            env1.setRelease(2000);
-            float thisSample = osc1.sinewave(fundamental);
-            float envSample = env1.adsr(thisSample, env1.trigger) * level;
+            float modSample = modulatorOsc.sinewave(modulatorPitch);
+            float modEnvSample = modulatorEnv.adsr(modSample, modulatorEnv.trigger);
+            float carSample = carrierOsc.sinewave(fundamental +
+                                                  (modEnvSample * modIndex));
+            float carEnvSample = carrierEnv.adsr(carSample, carrierEnv.trigger);
             //calculate a sample for each channel
             for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
             {
-                outputBuffer.addSample(channel, startSample, envSample);
+                outputBuffer.addSample(channel, startSample, carEnvSample);
             }
             ++startSample;
         }
@@ -88,6 +99,11 @@ public:
 private:
     double level;
     double fundamental;
-    maxiOsc osc1;
-    maxiEnv env1;
+    maxiOsc carrierOsc;
+    maxiOsc modulatorOsc;
+    maxiEnv carrierEnv;
+    maxiEnv modulatorEnv;
+    float modFactor = (1.0 / 4.0); // modulator frequency = fundamental * modFactor
+    double modulatorPitch;
+    double modIndex = 85.0;
 };
