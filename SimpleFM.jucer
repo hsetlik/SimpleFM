@@ -6,8 +6,6 @@
               headerPath="/Users/hayden/Desktop/Programming/Maximilian/Maximilian/src">
   <MAINGROUP id="Ax74qE" name="SimpleFM">
     <GROUP id="{BE32745E-5A34-0691-C8A8-D3437CBFECD0}" name="Source">
-      <FILE id="GxBjZy" name="Operator.cpp" compile="1" resource="0" file="Source/Operator.cpp"/>
-      <FILE id="pKpbT0" name="Operator.h" compile="0" resource="0" file="Source/Operator.h"/>
       <GROUP id="{4F1A466B-7B37-A2E1-2890-3DD4275FBEAC}" name="Maximilian_bits">
         <GROUP id="{02D0C198-0ADD-98E1-6C76-4D880EC0D932}" name="src">
           <GROUP id="{30E56192-D7B6-C2ED-F5CA-46F7A6EB3C9F}" name="libs">
@@ -32,6 +30,8 @@
       <FILE id="ydsjl7" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="ozDAyg" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="mP5yo1" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      <FILE id="VRZL2c" name="OperatorPanelComponent.h" compile="0" resource="0"
+            file="Source/OperatorPanelComponent.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>

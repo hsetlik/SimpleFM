@@ -10,7 +10,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
-
+#include "OperatorPanelComponent.h"
 
 
 //==============================================================================
@@ -33,6 +33,8 @@ private:
     // access the processor object that created it.
     SimpleFmAudioProcessor& audioProcessor;
     //every slider /other control needs to have an attachment
+    //putting all the sliders for one envelope in a single parent component
+    
     juce::Slider cAttackSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> caAttach;
     juce::Slider cDecaySlider;
