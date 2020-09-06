@@ -63,6 +63,11 @@ public:
     float cSustainLevel = 0.4f;
     float cReleaseTime = 25.0f;
     
+    float mAttackTime = 25.0f;
+    float mDecayTime = 25.0f;
+    float mSustainLevel = 0.4f;
+    float mReleaseTime = 25.0f;
+    
 
 private:
     juce::Synthesiser thisSynth;

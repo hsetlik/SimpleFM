@@ -40,6 +40,15 @@ private:
     juce::Slider cReleaseSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crAttach;
     
+    juce::Slider mAttackSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> maAttach;
+    juce::Slider mDecaySlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mdAttach;
+    juce::Slider mSustainSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> msAttach;
+    juce::Slider mReleaseSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mrAttach;
+    
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)

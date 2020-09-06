@@ -22,6 +22,17 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
                ("cSustain", "Sustain", 0.0f, 1.0f, 0.6f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
                ("cRelease", "Release", 0.1f, 4000.0f, 250.0f));
+    //now for the modulator envelope
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mAttack", "Attack", 0.1f, 4000.0f, 1.0f));
+            // identifier, name, minimum Value, maximumValue, default value
+    //use more layout.add calls to add more parameters
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mDecay", "Decay", 0.1f, 4000.0f, 55.0f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mSustain", "Sustain", 0.0f, 1.0f, 0.6f));
+    layout.add(std::make_unique<juce::AudioParameterFloat>
+               ("mRelease", "Release", 0.1f, 4000.0f, 250.0f));
     return layout;
 }
 
@@ -164,6 +175,11 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
             thisVoice->getCDecay(tree.getRawParameterValue("cDecay"));
             thisVoice->getCSustain(tree.getRawParameterValue("cSustain"));
             thisVoice->getCRelease(tree.getRawParameterValue("cRelease"));
+            
+            thisVoice->getMAttack(tree.getRawParameterValue("mAttack"));
+            thisVoice->getMDecay(tree.getRawParameterValue("mDecay"));
+            thisVoice->getMSustain(tree.getRawParameterValue("mSustain"));
+            thisVoice->getMRelease(tree.getRawParameterValue("mRelease"));
         }
     }
     buffer.clear();

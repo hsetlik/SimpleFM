@@ -36,6 +36,23 @@ public:
     {
         carrierEnv.setRelease(*release);
     }
+    //modulator envelope
+    void getMAttack(std::atomic<float>* attack)
+    {
+        modulatorEnv.setAttack(*attack);
+    }
+    void getMDecay(std::atomic<float>* decay)
+    {
+        modulatorEnv.setDecay(*decay);
+    }
+    void getMSustain(std::atomic<float>* sustain)
+    {
+        modulatorEnv.setSustain(*sustain);
+    }
+    void getMRelease(std::atomic<float>* release)
+    {
+        modulatorEnv.setRelease(*release);
+    }
     
     //========================================
     void startNote (int midiNoteNumber,

@@ -49,6 +49,40 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     addAndMakeVisible(&cReleaseSlider);
     crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "cRelease", cReleaseSlider));
     
+    mAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
+    mAttackSlider.setRange(0.1, 4000.0);
+    mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    mAttackSlider.setValue(0.4);
+    mAttackSlider.addListener(this);
+    addAndMakeVisible(&mAttackSlider);
+    maAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mAttack", mAttackSlider));
+    
+    mDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
+    mDecaySlider.setRange(0.1, 4000.0);
+    mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    mDecaySlider.setValue(0.4);
+    mDecaySlider.addListener(this);
+    addAndMakeVisible(&mDecaySlider);
+    mdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mDecay", mDecaySlider));
+    
+    mSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
+    mSustainSlider.setRange(0.1, 4000.0);
+    mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    mSustainSlider.setValue(0.4);
+    mSustainSlider.addListener(this);
+    addAndMakeVisible(&mSustainSlider);
+    msAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mSustain", mSustainSlider));
+    
+    mReleaseSlider.setSliderStyle(juce::Slider::LinearVertical);
+    mReleaseSlider.setRange(0.0, 0.1);
+    mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    mReleaseSlider.setValue(0.4);
+    mReleaseSlider.addListener(this);
+    addAndMakeVisible(&mReleaseSlider);
+    mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "mRelease", mReleaseSlider));
+    
+
+    
 }
 
 SimpleFmAudioProcessorEditor::~SimpleFmAudioProcessorEditor()
@@ -70,6 +104,11 @@ void SimpleFmAudioProcessorEditor::resized()
     cDecaySlider.setBounds(70, 20, 40, 100);
     cSustainSlider.setBounds(120, 20, 40, 100);
     cReleaseSlider.setBounds(170, 20, 40, 100);
+    
+    mAttackSlider.setBounds(220, 20, 40, 100);
+    mDecaySlider.setBounds(270, 20, 40, 100);
+    mSustainSlider.setBounds(320, 20, 40, 100);
+    mReleaseSlider.setBounds(370, 20, 40, 100);
 }
 
 void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
@@ -86,6 +125,18 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
     }else if(slider == &cReleaseSlider)
     {
         audioProcessor.cReleaseTime = cReleaseSlider.getValue();
+    }else if(slider == &mAttackSlider)
+    {
+        audioProcessor.mAttackTime = mAttackSlider.getValue();
+    }else if(slider == &mDecaySlider)
+    {
+        audioProcessor.mDecayTime = mDecaySlider.getValue();
+    }else if(slider == &mSustainSlider)
+    {
+        audioProcessor.mSustainLevel = mSustainSlider.getValue();
+    }else if(slider == &mReleaseSlider)
+    {
+        audioProcessor.mReleaseTime = mReleaseSlider.getValue();
     }
     
 }
