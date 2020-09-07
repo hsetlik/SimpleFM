@@ -63,10 +63,57 @@ public:
             modFactor = rawValue;
         else
             modFactor = (1.0 / fabs(rawValue));
-        
     }
-    
+    void setCAttack(int index, std::atomic<float>* attack)
+    {
+        cEnvs[index].setAttack(*attack);
+    }
+    void setCDecay(int index, std::atomic<float>* decay)
+    {
+        cEnvs[index].setDecay(*decay);
+    }
+    void setCSustain(int index, std::atomic<float>* sustain)
+    {
+        cEnvs[index].setSustain(*sustain);
+    }
+    void setCRelease(int index, std::atomic<float>* release)
+    {
+        cEnvs[index].setRelease(*release);
+    }
+    //modulator envelope
+    void setMAttacks(int index, std::atomic<float>* attack)
+    {
+        mEnvs[index].setAttack(*attack);
+    }
+    void setMDecays(int index, std::atomic<float>* decay)
+    {
+        mEnvs[index].setDecay(*decay);
+    }
+    void setMSustains(int index, std::atomic<float>* sustain)
+    {
+        mEnvs[index].setSustain(*sustain);
+    }
+    void setMReleases(int index, std::atomic<float>* release)
+    {
+        mEnvs[index].setRelease(*release);
+    }
+    void setIndexVals(int index, std::atomic<float>* iVal)
+    {
+        modIndeces[index] = *iVal;
+    }
+    void setFactorVals(int index, std::atomic<float>* fVal)
+    {
+        float rawValue = *fVal;
+        if(rawValue > 0)
+            modFactors[index] = rawValue;
+        else
+            modFactors[index] = (1.0 / fabs(rawValue));
+    }
     //========================================
+    void setupPointers(std::vector<OperatorPanel*> allPanels)
+    {
+        allOps = allPanels;
+    }
     void startNote (int midiNoteNumber,
                     float velocity,
                     juce::SynthesiserSound *sound,
@@ -78,23 +125,23 @@ public:
         modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
         printf("mod pitch: %f\n", modulatorPitch);
-        /*
-        carrierEnv.setAttack(150);
-        carrierEnv.setDecay(1500);
-        carrierEnv.setSustain(0.7);
-        carrierEnv.setRelease(900);
-        
-        modulatorEnv.setAttack(1600);
-        modulatorEnv.setDecay(1200);
-        modulatorEnv.setSustain(0.4);
-        modulatorEnv.setRelease(800);
-         */
+        for(int i = 0; i < numOperators; ++i)
+        {
+            cEnvs[i].trigger = 1;
+            mEnvs[i].trigger = 1;
+            modPitches[i] = fundamental * modFactors[i];
+        }
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
     {
         carrierEnv.trigger = 0;
         modulatorEnv.trigger = 0;
+        for(int i = 0; i < numOperators; ++i)
+        {
+            cEnvs[i].trigger = 0;
+            mEnvs[i].trigger = 0;
+        }
         allowTailOff = true;
         if(velocity == 0)
             clearCurrentNote();
@@ -145,6 +192,7 @@ public:
     //===============================================
 private:
     double fundamental;
+    
     maxiOsc carrierOsc;
     maxiOsc modulatorOsc;
     maxiEnv carrierEnv;
@@ -152,4 +200,16 @@ private:
     float modFactor; // modulator frequency = fundamental * modFactor
     double modulatorPitch;
     double modIndex;
+    
+    //vectors to store the above values for multiple operators
+    int numOperators;
+    std::vector<maxiOsc> cOscs;
+    std::vector<maxiOsc> mOscs;
+    std::vector<maxiEnv> cEnvs;
+    std::vector<maxiEnv> mEnvs;
+    std::vector<float> modFactors;
+    std::vector<double> modPitches;
+    std::vector<double> modIndeces;
+    //each operator must be added to this vector
+    std::vector<OperatorPanel*> allOps;
 };

@@ -25,8 +25,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void sliderValueChanged(juce::Slider* slider) override;
-    void assignOperatorPointers(int index); //NOTE: all operator pointers must be assigned before sliderValueChanged is called
-
+    
 private:
     
     // This reference is provided as a quick way for your editor to
@@ -56,7 +55,7 @@ private:
     juce::Slider factorSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
     
-    OperatorPanel Panel1;
+    OperatorPanel Panel0;
     std::vector<OperatorPanel*> allOperators; //vector to access operators by index
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)

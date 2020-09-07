@@ -62,7 +62,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout())
+        tree(*this, nullptr, "ALLPARAMETERS", createOpParameterLayout())
 #endif
 {
     for(int i = 0; i < 6; ++i)
@@ -185,6 +185,8 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         if((thisVoice =  dynamic_cast<SynthVoice*>(thisSynth.getVoice(i))))
         {
             //call the callbacks for all the parameters
+            //add an index argument to each of these and then iterate for each operator
+            //the strings for each of these should be "baseName" + juce::String(index);
             thisVoice->getCAttack(tree.getRawParameterValue("cAttack"));
             thisVoice->getCDecay(tree.getRawParameterValue("cDecay"));
             thisVoice->getCSustain(tree.getRawParameterValue("cSustain"));

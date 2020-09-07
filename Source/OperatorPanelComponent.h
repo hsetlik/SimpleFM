@@ -50,9 +50,24 @@ public:
     CarrierEnvelope()
     {
         setBoundsRelative(0.0f, 0.0f, 0.5f, 0.5f);
-        addAndMakeVisible(cAttackSlider);
+        addAndMakeVisible(&cAttackSlider);
+        cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
+        cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+        cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        cAttackSlider.setValue(25.0);
+        
         addAndMakeVisible(cDecaySlider);
+        cDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
+        cDecaySlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+        cDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        cDecaySlider.setValue(25.0);
+        
         addAndMakeVisible(cSustainSlider);
+        cSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
+        cSustainSlider.setRange(0.0, 1.0);
+        cSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        cSustainSlider.setValue(0.4);
+        
         addAndMakeVisible(cReleaseSlider);
     }
     ~CarrierEnvelope() {}
@@ -144,29 +159,18 @@ public:
     void initializeAll(juce::AudioProcessorValueTreeState* pTree, juce::Slider::Listener* thisListener)
     {
         //initilize the carrier envelope
-        cEnv.cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
-        cEnv.cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
-        cEnv.cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cEnv.cAttackSlider.setValue(25.0);
+        
         cEnv.cAttackSlider.addListener(thisListener);
-        addAndMakeVisible(&cEnv.cAttackSlider);
-        cEnv.caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cAttack", cEnv.cAttackSlider));
+        juce::String caStr = "cAttack" + juce::String(OpIndex);
+        cEnv.caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, caStr, cEnv.cAttackSlider));
         
-        cEnv.cDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
-        cEnv.cDecaySlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
-        cEnv.cDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cEnv.cDecaySlider.setValue(25.0);
+        
         cEnv.cDecaySlider.addListener(thisListener);
-        addAndMakeVisible(&cEnv.cDecaySlider);
-        cEnv.cdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cDecay", cEnv.cDecaySlider));
+        cEnv.cdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cDecay" + juce::String(OpIndex), cEnv.cDecaySlider));
         
-        cEnv.cSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
-        cEnv.cSustainSlider.setRange(0.0, 1.0);
-        cEnv.cSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cEnv.cSustainSlider.setValue(0.4);
+        
         cEnv.cSustainSlider.addListener(thisListener);
-        addAndMakeVisible(&cEnv.cSustainSlider);
-        cEnv.csAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cSustain", cEnv.cSustainSlider));
+        cEnv.csAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cSustain" + juce::String(OpIndex), cEnv.cSustainSlider));
         
         cEnv.cReleaseSlider.setSliderStyle(juce::Slider::LinearVertical);
         cEnv.cReleaseSlider.setRange(0.1, 4000.0);
@@ -174,7 +178,7 @@ public:
         cEnv.cReleaseSlider.setValue(0.4);
         cEnv.cReleaseSlider.addListener(thisListener);
         addAndMakeVisible(&cEnv.cReleaseSlider);
-        cEnv.crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cRelease", cEnv.cReleaseSlider));
+        cEnv.crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cRelease" + juce::String(OpIndex), cEnv.cReleaseSlider));
         //initialize the modulator envelope
         mEnv.mAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
         mEnv.mAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
@@ -182,7 +186,7 @@ public:
         mEnv.mAttackSlider.setValue(25.0);
         mEnv.mAttackSlider.addListener(thisListener);
         addAndMakeVisible(&mEnv.mAttackSlider);
-        mEnv.maAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mAttack", mEnv.mAttackSlider));
+        mEnv.maAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mAttack"+ juce::String(OpIndex), mEnv.mAttackSlider));
         
         mEnv.mDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
         mEnv.mDecaySlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
@@ -190,7 +194,7 @@ public:
         mEnv.mDecaySlider.setValue(25.0);
         mEnv.mDecaySlider.addListener(thisListener);
         addAndMakeVisible(&mEnv.mDecaySlider);
-        mEnv.mdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mDecay", mEnv.mDecaySlider));
+        mEnv.mdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mDecay"+ juce::String(OpIndex), mEnv.mDecaySlider));
         
         mEnv.mSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
         mEnv.mSustainSlider.setRange(0.0, 1.0);
@@ -198,7 +202,7 @@ public:
         mEnv.mSustainSlider.setValue(0.4);
         mEnv.mSustainSlider.addListener(thisListener);
         addAndMakeVisible(&mEnv.mSustainSlider);
-        mEnv.msAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mSustain", mEnv.mSustainSlider));
+        mEnv.msAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mSustain"+ juce::String(OpIndex), mEnv.mSustainSlider));
         
         mEnv.mReleaseSlider.setSliderStyle(juce::Slider::LinearVertical);
         mEnv.mReleaseSlider.setRange(0.1, 4000.0);
@@ -206,7 +210,7 @@ public:
         mEnv.mReleaseSlider.setValue(0.4);
         mEnv.mReleaseSlider.addListener(thisListener);
         addAndMakeVisible(&mEnv.mReleaseSlider);
-        mEnv.mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mRelease", mEnv.mReleaseSlider));
+        mEnv.mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mRelease"+ juce::String(OpIndex), mEnv.mReleaseSlider));
         //initialize the index knob
         iKnob.indexSlider.setSliderStyle(juce::Slider::Rotary);
         iKnob.indexSlider.setRange(1.0, 250.0);
@@ -215,7 +219,7 @@ public:
         iKnob.indexSlider.addListener(thisListener);
         addAndMakeVisible(&iKnob.indexSlider);
         iKnob.indexSlider.setNumDecimalPlacesToDisplay(1);
-        iKnob.iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "index", iKnob.indexSlider));
+        iKnob.iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "index"+ juce::String(OpIndex), iKnob.indexSlider));
         //initialize the factor knob
         fKnob.factorSlider.setSliderStyle(juce::Slider::Rotary);
         fKnob.factorSlider.setRange(-10.0, 10.0);
@@ -224,7 +228,7 @@ public:
         fKnob.factorSlider.addListener(thisListener);
         addAndMakeVisible(&fKnob.factorSlider);
         fKnob.factorSlider.setNumDecimalPlacesToDisplay(1);
-        fKnob.fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "factor", fKnob.factorSlider));
+        fKnob.fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "factor"+ juce::String(OpIndex), fKnob.factorSlider));
     }
     
     void someValueChanged(juce::Slider* slider)

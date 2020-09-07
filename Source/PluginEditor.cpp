@@ -10,14 +10,15 @@
 
 //==============================================================================
 SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), Panel1(1)
+    : AudioProcessorEditor (&p), audioProcessor (p), Panel0(0)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (600, 400);
     //set up GUI stuff below here
     //everything for one operator should be done in this funtion
-    Panel1.initializeAll(&audioProcessor.tree, this);
+    Panel0.initializeAll(&audioProcessor.tree, this);
+    allOperators.push_back(&Panel0);
     
     //and below here is old..
     cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
