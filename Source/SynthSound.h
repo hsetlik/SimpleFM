@@ -13,6 +13,7 @@
 #include <stdio.h>
 #if ! JUCE_PROJUCER_LIVE_BUILD
 #include "maximilian.h"
+#include "OperatorPanelComponent.h"
 #endif
 
 class SynthSound : public juce::SynthesiserSound
