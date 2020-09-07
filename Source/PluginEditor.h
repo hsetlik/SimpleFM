@@ -9,7 +9,6 @@
 #pragma once
 
 #include <JuceHeader.h>
-#include "PluginProcessor.h"
 #include "OperatorPanelComponent.h"
 
 
@@ -58,7 +57,7 @@ private:
     juce::Slider factorSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
     
-    
+    OperatorPanel Panel1;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)
 };
