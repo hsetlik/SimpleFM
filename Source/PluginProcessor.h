@@ -11,8 +11,6 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "SynthVoice.h"
-
-
 //==============================================================================
 /**
 */
@@ -70,6 +68,23 @@ public:
     
     double fIndex = 80.0;
     double fFactor = 1.0;
+    
+    //vectors of the above variables for per-operator implementation
+    
+    std::vector<float> cAttackTimes;
+    std::vector<float> cDecayTimes;
+    std::vector<float> cSustainLevels;
+    std::vector<float> cReleaseTimes;
+    
+    std::vector<float> mAttackTimes;
+    std::vector<float> mDecayTimes;
+    std::vector<float> mSustainLevels;
+    std::vector<float> mReleaseTimes;
+    
+    std::vector<double> fIndeces;
+    std::vector<double> fFactors;
+    
+
 
 private:
     juce::Synthesiser thisSynth;

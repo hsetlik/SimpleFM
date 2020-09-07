@@ -121,12 +121,13 @@ public:
 class OperatorPanel : public juce::Component
 {
 public:
-    OperatorPanel()
+    OperatorPanel(int index)
     {
         addAndMakeVisible(cEnv);
         addAndMakeVisible(mEnv);
         addAndMakeVisible(iKnob);
         addAndMakeVisible(fKnob);
+        OpIndex = index;
     }
     ~OperatorPanel() {}
     void resized() override
@@ -142,6 +143,7 @@ public:
     }
     void initializeAll(juce::AudioProcessorValueTreeState* pTree, juce::Slider::Listener* thisListener)
     {
+        //initilize the carrier envelope
         cEnv.cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
         cEnv.cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
         cEnv.cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
@@ -173,7 +175,7 @@ public:
         cEnv.cReleaseSlider.addListener(thisListener);
         addAndMakeVisible(&cEnv.cReleaseSlider);
         cEnv.crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cRelease", cEnv.cReleaseSlider));
-        
+        //initialize the modulator envelope
         mEnv.mAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
         mEnv.mAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
         mEnv.mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
@@ -205,10 +207,123 @@ public:
         mEnv.mReleaseSlider.addListener(thisListener);
         addAndMakeVisible(&mEnv.mReleaseSlider);
         mEnv.mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mRelease", mEnv.mReleaseSlider));
-        
+        //initialize the index knob
+        iKnob.indexSlider.setSliderStyle(juce::Slider::Rotary);
+        iKnob.indexSlider.setRange(1.0, 250.0);
+        iKnob.indexSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        iKnob.indexSlider.setValue(100.0);
+        iKnob.indexSlider.addListener(thisListener);
+        addAndMakeVisible(&iKnob.indexSlider);
+        iKnob.indexSlider.setNumDecimalPlacesToDisplay(1);
+        iKnob.iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "index", iKnob.indexSlider));
+        //initialize the factor knob
+        fKnob.factorSlider.setSliderStyle(juce::Slider::Rotary);
+        fKnob.factorSlider.setRange(-10.0, 10.0);
+        fKnob.factorSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        fKnob.factorSlider.setValue(1.0);
+        fKnob.factorSlider.addListener(thisListener);
+        addAndMakeVisible(&fKnob.factorSlider);
+        fKnob.factorSlider.setNumDecimalPlacesToDisplay(1);
+        fKnob.fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "factor", fKnob.factorSlider));
     }
+    
+    void someValueChanged(juce::Slider* slider)
+    { //call this for each operator in the editor's 'sliderValueChanged' method
+        if(slider == &cEnv.cAttackSlider)
+        {
+            *pcAttackTime = cEnv.cAttackSlider.getValue();
+        } else if(slider == &cEnv.cDecaySlider)
+        {
+            *pcDecayTime = cEnv.cDecaySlider.getValue();
+        }else if(slider == &cEnv.cSustainSlider)
+        {
+            *pcSustainLevel = cEnv.cSustainSlider.getValue();
+        }else if(slider == &cEnv.cReleaseSlider)
+        {
+            *pcReleaseTime = cEnv.cReleaseSlider.getValue();
+        }else if(slider == &mEnv.mAttackSlider)
+        {
+            *pmAttackTime = mEnv.mAttackSlider.getValue();
+        }else if(slider == &mEnv.mDecaySlider)
+        {
+            *pmDecayTime = mEnv.mDecaySlider.getValue();
+        }else if(slider == &mEnv.mSustainSlider)
+        {
+            *pmSustainLevel = mEnv.mSustainSlider.getValue();
+        }else if(slider == &mEnv.mReleaseSlider)
+        {
+            *pmReleaseTime = mEnv.mReleaseSlider.getValue();
+        } else if(slider == &iKnob.indexSlider)
+        {
+            *pfIndex = iKnob.indexSlider.getValue();
+        } else if(slider == &fKnob.factorSlider)
+        {
+            *pfFactor = fKnob.factorSlider.getValue();
+        }
+    }
+    void addOperatorParameterLayout(int operatorIndex,
+                                    juce::AudioProcessorValueTreeState::ParameterLayout* layout)
+    { //creates the parameter layout to initialize the processor
+        //append the operator's index to each ID string so they are distinct per operator
+        juce::String opNum = juce::String(operatorIndex);
+        juce::String cA = "cAttack" + opNum;
+        juce::String cD = "cDecay" + opNum;
+        juce::String cS = "cSustain" + opNum;
+        juce::String cR = "cRelease" + opNum;
+        
+        juce::String mA = "mAttack" + opNum;
+        juce::String mD = "mDecay" + opNum;
+        juce::String mS = "mSustain" + opNum;
+        juce::String mR = "mRelease" + opNum;
+        
+        juce::String indexID = "index" + opNum;
+        juce::String factorID = "factor" + opNum;
+        
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (cA, "Attack", 0.1f, 4000.0f, 1.0f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (cD, "Decay", 0.1f, 4000.0f, 55.0f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (cS, "Sustain", 0.0f, 1.0f, 0.6f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (cR, "Release", 0.1f, 4000.0f, 250.0f));
+        
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (mA, "Attack", 0.1f, 4000.0f, 1.0f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (mD, "Decay", 0.1f, 4000.0f, 55.0f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (mS, "Sustain", 0.0f, 1.0f, 0.6f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (mR, "Release", 0.1f, 4000.0f, 250.0f));
+        
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (indexID, "Mod Index", 0.0f, 250.0f, 100.0f));
+        layout->add(std::make_unique<juce::AudioParameterFloat>
+                   (factorID, "Mod Factor", -10.0f, 10.0f, 1.0f));
+    }
+    
     CarrierEnvelope cEnv;
     ModulatorEnvelope mEnv;
     IndexKnob iKnob;
     FactorKnob fKnob;
+    int OpIndex; //assigned at initialization, keeps track of which operator this is
+    
+    //these point to the correct member of the value vectors in the processor
+    //NOTE: these must be assigned via assignOperatorPointers in the constructor of the editor
+    float* pcAttackTime;
+    float* pcDecayTime;
+    float* pcSustainLevel;
+    float* pcReleaseTime;
+    
+    float* pmAttackTime;
+    float* pmDecayTime;
+    float* pmSustainLevel;
+    float* pmReleaseTime;
+    
+    double* pfIndex;
+    double* pfFactor;
 };
+
+
+

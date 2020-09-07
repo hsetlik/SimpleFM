@@ -9,6 +9,15 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+juce::AudioProcessorValueTreeState::ParameterLayout createOpParameterLayout()
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    //this will have to be repeated for each operator
+    OperatorPanel panel(1);
+    panel.addOperatorParameterLayout(1, &layout);
+    return layout;
+}
+
 juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
@@ -38,8 +47,6 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
                ("index", "Mod Index", 0.0f, 250.0f, 100.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
                ("factor", "Mod Factor", -10.0f, 10.0f, 1.0f));
-    
-    
     return layout;
 }
 

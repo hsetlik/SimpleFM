@@ -10,7 +10,7 @@
 
 //==============================================================================
 SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p), Panel1(1)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -122,6 +122,7 @@ void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
 
 void SimpleFmAudioProcessorEditor::resized()
 {
+    //just call .resized() for each operator
     cAttackSlider.setBounds(20, 20, 40, 100);
     cDecaySlider.setBounds(70, 20, 40, 100);
     cSustainSlider.setBounds(120, 20, 40, 100);
