@@ -81,27 +81,27 @@ public:
         cEnvs[index].setRelease(*release);
     }
     //modulator envelope
-    void setMAttacks(int index, std::atomic<float>* attack)
+    void setMAttack(int index, std::atomic<float>* attack)
     {
         mEnvs[index].setAttack(*attack);
     }
-    void setMDecays(int index, std::atomic<float>* decay)
+    void setMDecay(int index, std::atomic<float>* decay)
     {
         mEnvs[index].setDecay(*decay);
     }
-    void setMSustains(int index, std::atomic<float>* sustain)
+    void setMSustain(int index, std::atomic<float>* sustain)
     {
         mEnvs[index].setSustain(*sustain);
     }
-    void setMReleases(int index, std::atomic<float>* release)
+    void setMRelease(int index, std::atomic<float>* release)
     {
         mEnvs[index].setRelease(*release);
     }
-    void setIndexVals(int index, std::atomic<float>* iVal)
+    void setIndexVal(int index, std::atomic<float>* iVal)
     {
         modIndeces[index] = *iVal;
     }
-    void setFactorVals(int index, std::atomic<float>* fVal)
+    void setFactorVal(int index, std::atomic<float>* fVal)
     {
         float rawValue = *fVal;
         if(rawValue > 0)
@@ -190,6 +190,8 @@ public:
         
     }
     //===============================================
+     //each operator must be added to this vector
+    std::vector<OperatorPanel*> allOps;
 private:
     double fundamental;
     
@@ -210,6 +212,5 @@ private:
     std::vector<float> modFactors;
     std::vector<double> modPitches;
     std::vector<double> modIndeces;
-    //each operator must be added to this vector
-    std::vector<OperatorPanel*> allOps;
+   
 };

@@ -15,12 +15,16 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
     setSize (600, 400);
+    addAndMakeVisible(&Panel0);
     //set up GUI stuff below here
     //everything for one operator should be done in this funtion
-    //Panel0.initializeAll(&audioProcessor.tree, this);
-    //allOperators.push_back(&Panel0);
+    allOperators.push_back(&Panel0);
+    audioProcessor.thisVoice->setupPointers(allOperators);
+    Panel0.initializeAll(&audioProcessor.tree, this);
+    
     
     //and below here is old..
+    /*
     cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
     cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
     cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
@@ -106,6 +110,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     addAndMakeVisible(&factorSlider);
     factorSlider.setNumDecimalPlacesToDisplay(1);
     fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree, "factor", factorSlider));
+     */
 }
 
 SimpleFmAudioProcessorEditor::~SimpleFmAudioProcessorEditor()
@@ -124,6 +129,11 @@ void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
 void SimpleFmAudioProcessorEditor::resized()
 {
     //just call .resized() for each operator
+    for(int i = 0; i < allOperators.size(); ++i)
+    {
+        allOperators[i]->resized();
+    }
+    /* Old stuff....
     cAttackSlider.setBounds(20, 20, 40, 100);
     cDecaySlider.setBounds(70, 20, 40, 100);
     cSustainSlider.setBounds(120, 20, 40, 100);
@@ -136,10 +146,17 @@ void SimpleFmAudioProcessorEditor::resized()
     
     indexSlider.setBounds(100, 150, 40, 60);
     factorSlider.setBounds(200, 150, 40, 60);
+     */
 }
 
 void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
+    for(int i = 0; i < allOperators.size(); ++i)
+    {
+        allOperators[i]->someValueChanged(slider);
+    }
+    //Old below here...
+    /*
     if(slider == &cAttackSlider)
     {
         audioProcessor.cAttackTime = cAttackSlider.getValue();
@@ -171,5 +188,21 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
     {
         audioProcessor.fFactor = factorSlider.getValue();
     }
+     */
+}
+
+void SimpleFmAudioProcessorEditor::assignPointers(int index)
+{
+    allOperators[index]->pcAttackTime = &audioProcessor.cAttackTimes[index];
+    allOperators[index]->pcDecayTime = &audioProcessor.cDecayTimes[index];
+    allOperators[index]->pcSustainLevel = &audioProcessor.cSustainLevels[index];
+    allOperators[index]->pcReleaseTime = &audioProcessor.cReleaseTimes[index];
     
+    allOperators[index]->pmAttackTime = &audioProcessor.mAttackTimes[index];
+    allOperators[index]->pmDecayTime = &audioProcessor.mDecayTimes[index];
+    allOperators[index]->pmSustainLevel = &audioProcessor.mSustainLevels[index];
+    allOperators[index]->pmReleaseTime = &audioProcessor.mReleaseTimes[index];
+    
+    allOperators[index]->pfIndex = &audioProcessor.fIndeces[index];
+    allOperators[index]->pfFactor = &audioProcessor.fFactors[index];
 }

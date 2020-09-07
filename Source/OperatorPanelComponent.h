@@ -17,6 +17,7 @@ public:
     {
         setBoundsRelative(0.5f, 0.0f, 0.5f, 0.5f);
         addAndMakeVisible(&mAttackSlider);
+        mAttackSlider.setName("maSlider");
         mAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
         mAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
         mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
@@ -70,6 +71,7 @@ public:
     {
         setBoundsRelative(0.0f, 0.0f, 0.5f, 0.5f);
         addAndMakeVisible(&cAttackSlider);
+        cAttackSlider.setName("caSlider");
         cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
         cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
         cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
@@ -179,7 +181,7 @@ public:
         mEnv.setBounds(area.removeFromLeft(2 * quarter));
         cEnv.setBounds(area.removeFromLeft(2 * quarter));
     }
-    void initializeAll(juce::AudioProcessorValueTreeState* pTree, juce::Slider::Listener* thisListener)
+    void initializeAll(juce::AudioProcessorValueTreeState* pTree, juce::Slider::Listener* thisListener, int index)
     {
         //initilize the carrier envelope
         
@@ -220,6 +222,7 @@ public:
     }
     
     void someValueChanged(juce::Slider* slider)
+    //NOTE: the pointers below need to be assigned in the editor constructor
     { //call this for each operator in the editor's 'sliderValueChanged' method
         if(slider == &cEnv.cAttackSlider)
         {

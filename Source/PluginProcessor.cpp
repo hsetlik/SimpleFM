@@ -62,7 +62,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout())
+        tree(*this, nullptr, "ALLPARAMETERS", createOpParameterLayout())
 #endif
 {
     for(int i = 0; i < 6; ++i)
@@ -187,6 +187,22 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
             //call the callbacks for all the parameters
             //add an index argument to each of these and then iterate for each operator
             //the strings for each of these should be "baseName" + juce::String(index);
+            for(int i = 0; i < thisVoice->allOps.size(); ++i)
+            {
+                thisVoice->setCAttack(i, tree.getRawParameterValue("cAttack" + juce::String(i)));
+                thisVoice->setCDecay(i, tree.getRawParameterValue("cDecay" + juce::String(i)));
+                thisVoice->setCSustain(i, tree.getRawParameterValue("cSustain" + juce::String(i)));
+                thisVoice->setCRelease(i, tree.getRawParameterValue("cRelease" + juce::String(i)));
+                
+                thisVoice->setMAttack(i, tree.getRawParameterValue("mAttack" + juce::String(i)));
+                thisVoice->setMDecay(i, tree.getRawParameterValue("mDecay" + juce::String(i)));
+                thisVoice->setMSustain(i, tree.getRawParameterValue("mSustain" + juce::String(i)));
+                thisVoice->setMRelease(i, tree.getRawParameterValue("mRelease" + juce::String(i)));
+                
+                thisVoice->setIndexVal(i, tree.getRawParameterValue("index" + juce::String(i)));
+                thisVoice->setFactorVal(i, tree.getRawParameterValue("factor" + juce::String(i)));
+            }
+            /*
             thisVoice->getCAttack(tree.getRawParameterValue("cAttack"));
             thisVoice->getCDecay(tree.getRawParameterValue("cDecay"));
             thisVoice->getCSustain(tree.getRawParameterValue("cSustain"));
@@ -199,6 +215,7 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
             
             thisVoice->getIndexVal(tree.getRawParameterValue("index"));
             thisVoice->getFactorVal(tree.getRawParameterValue("factor"));
+             */
         }
     }
     buffer.clear();
