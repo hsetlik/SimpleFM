@@ -62,7 +62,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createOpParameterLayout())
+        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout())
 #endif
 {
     for(int i = 0; i < 6; ++i)
