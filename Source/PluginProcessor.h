@@ -70,7 +70,22 @@ public:
     
     double fIndex = 80.0;
     double fFactor = 1.0;
-
+    //vectors of the above
+    std::vector<float> cAttackTimes{0, 0, 0, 0, 0, 0};
+    std::vector<float> cDecayTimes{0, 0, 0, 0, 0, 0};
+    std::vector<float> cSustainLevels{0, 0, 0, 0, 0, 0};
+    std::vector<float> cReleaseTimes{0, 0, 0, 0, 0, 0};
+    
+    std::vector<float> mAttackTimes{0, 0, 0, 0, 0, 0};
+    std::vector<float> mDecayTimes{0, 0, 0, 0, 0, 0};
+    std::vector<float> mSustainLevels{0, 0, 0, 0, 0, 0};
+    std::vector<float> mReleaseTimes{0, 0, 0, 0, 0, 0};
+    
+    std::vector<double> fIndeces{0, 0, 0, 0, 0, 0};
+    std::vector<double> fFactors{0, 0, 0, 0, 0, 0};
+    
+    OperatorAudioElement oe0;
+    OperatorAudioElement oe1;
 private:
     juce::Synthesiser thisSynth;
     SynthVoice* thisVoice;

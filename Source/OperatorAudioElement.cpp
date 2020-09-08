@@ -9,3 +9,8 @@
 */
 
 #include "OperatorAudioElement.h"
+
+OperatorAudioElement::OperatorAudioElement(int index)
+{
+    OpIndex = index;
+}

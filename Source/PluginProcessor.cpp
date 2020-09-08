@@ -43,6 +43,63 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
     return layout;
 }
 
+juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperators)
+{
+    juce::AudioProcessorValueTreeState::ParameterLayout layout;
+    for( int i = 0; i < numOperators; ++i)
+    {
+        juce::String iStr = juce::String(i);
+        //setting up the distinct name/ID strings for each operator
+        //for the carrier envelope
+        juce::String cAttackID = "cAttack" + iStr;
+        juce::String cAttackName = "Carrier " + iStr + " Attack";
+        juce::String cDecayID = "cDecay" + iStr;
+        juce::String cDecayName = "Carrier " + iStr + " Decay";
+        juce::String cSustainID = "cSustain" + iStr;
+        juce::String cSustainName = "Carrier " + iStr + " Sustain";
+        juce::String cReleaseID = "cRelease" + iStr;
+        juce::String cReleaseName = "Carrier " + iStr + " Release";
+        //for the modualtor envelope
+        juce::String mAttackID = "mAttack" + iStr;
+        juce::String mAttackName = "Modulator " + iStr + " Attack";
+        juce::String mDecayID = "mDecay" + iStr;
+        juce::String mDecayName = "Modulator " + iStr + " Decay";
+        juce::String mSustainID = "mSustain" + iStr;
+        juce::String mSustainName = "Modulator " + iStr + " Sustain";
+        juce::String mReleaseID = "mRelease" + iStr;
+        juce::String mReleaseName = "Modulator " + iStr + " Release";
+        //for the knobs
+        juce::String iKnobID = "index" + iStr;
+        juce::String iKnobName = "Operator " + iStr + " Index";
+        juce::String fKnobID = "factor" + iStr;
+        juce::String fKnobName = "Operator " + iStr + " Factor";
+        //creating the parameters...
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+           (cAttackID, cAttackName, 0.1f, 4000.0f, 8.0f));
+        // identifier, name, minimum Value, maximumValue, default value
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (cDecayID, cDecayName, 0.1f, 4000.0f, 55.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (cSustainID, cSustainName, 0.0f, 1.0f, 0.6f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (cReleaseID, cReleaseName, 0.1f, 4000.0f, 250.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (mAttackID, mAttackName, 0.1f, 4000.0f, 8.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (mDecayID, mDecayName, 0.1f, 4000.0f, 55.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (mSustainID, mSustainName, 0.0f, 1.0f, 0.6f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (mReleaseID, mReleaseName, 0.1f, 4000.0f, 250.0f));
+        
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (iKnobID, iKnobName, 0.0f, 250.0f, 100.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (fKnobID, fKnobName, -10.0f, 10.0f, 1.0f));
+    }
+    return layout;
+}
+
 //==============================================================================
 SimpleFmAudioProcessor::SimpleFmAudioProcessor()
 #ifndef JucePlugin_PreferredChannelConfigurations
@@ -55,7 +112,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout())
+        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout()), oe0(0), oe1(1)
 #endif
 {
     for(int i = 0; i < 6; ++i)
@@ -64,6 +121,11 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
     }
     thisSynth.clearSounds();
     thisSynth.addSound(new SynthSound());
+    OperatorAudioElement* poe0 = &oe0;
+    for(int i = 0; i < 1; ++i)
+    {
+        thisVoice->OpElement.push_back(poe0);
+    }
 }
 
 SimpleFmAudioProcessor::~SimpleFmAudioProcessor()
@@ -178,18 +240,22 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         if((thisVoice =  dynamic_cast<SynthVoice*>(thisSynth.getVoice(i))))
         {
             //call the callbacks for all the parameters
-            thisVoice->getCAttack(tree.getRawParameterValue("cAttack"));
-            thisVoice->getCDecay(tree.getRawParameterValue("cDecay"));
-            thisVoice->getCSustain(tree.getRawParameterValue("cSustain"));
-            thisVoice->getCRelease(tree.getRawParameterValue("cRelease"));
-            
-            thisVoice->getMAttack(tree.getRawParameterValue("mAttack"));
-            thisVoice->getMDecay(tree.getRawParameterValue("mDecay"));
-            thisVoice->getMSustain(tree.getRawParameterValue("mSustain"));
-            thisVoice->getMRelease(tree.getRawParameterValue("mRelease"));
-            
-            thisVoice->getIndexVal(tree.getRawParameterValue("index"));
-            thisVoice->getFactorVal(tree.getRawParameterValue("factor"));
+            for(int n = 0; n < thisVoice->OpElement.size(); ++n) //getting the parameters per voice
+            {
+                juce::String iStr = juce::String(n);
+                thisVoice->OpElement[n]->setCAttack(tree.getRawParameterValue("cAttack" + iStr));
+                thisVoice->OpElement[n]->setCDecay(tree.getRawParameterValue("cDecay" + iStr));
+                thisVoice->OpElement[n]->setCSustain(tree.getRawParameterValue("cSustain" + iStr));
+                thisVoice->OpElement[n]->setCRelease(tree.getRawParameterValue("cRelease" + iStr));
+                
+                thisVoice->OpElement[n]->setMAttack(tree.getRawParameterValue("mAttack" + iStr));
+                thisVoice->OpElement[n]->setMDecay(tree.getRawParameterValue("mDecay" + iStr));
+                thisVoice->OpElement[n]->setMSustain(tree.getRawParameterValue("mSustain" + iStr));
+                thisVoice->OpElement[n]->setMRelease(tree.getRawParameterValue("mRelease" + iStr));
+                
+                thisVoice->OpElement[n]->setIndexVal(tree.getRawParameterValue("index" + iStr));
+                thisVoice->OpElement[n]->setFactorVal(tree.getRawParameterValue("factor" + iStr));
+            }
         }
     }
     buffer.clear();

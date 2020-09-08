@@ -20,53 +20,6 @@ public:
     {
         return dynamic_cast<SynthSound*>(sound) != nullptr;
     }
-    void getCAttack(std::atomic<float>* attack)
-    {
-        carrierEnv.setAttack(*attack);
-    }
-    void getCDecay(std::atomic<float>* decay)
-    {
-        carrierEnv.setDecay(*decay);
-    }
-    void getCSustain(std::atomic<float>* sustain)
-    {
-        carrierEnv.setSustain(*sustain);
-    }
-    void getCRelease(std::atomic<float>* release)
-    {
-        carrierEnv.setRelease(*release);
-    }
-    //modulator envelope
-    void getMAttack(std::atomic<float>* attack)
-    {
-        modulatorEnv.setAttack(*attack);
-    }
-    void getMDecay(std::atomic<float>* decay)
-    {
-        modulatorEnv.setDecay(*decay);
-    }
-    void getMSustain(std::atomic<float>* sustain)
-    {
-        modulatorEnv.setSustain(*sustain);
-    }
-    void getMRelease(std::atomic<float>* release)
-    {
-        modulatorEnv.setRelease(*release);
-    }
-    void getIndexVal(std::atomic<float>* iVal)
-    {
-        modIndex = *iVal;
-    }
-    void getFactorVal(std::atomic<float>* fVal)
-    {
-        float rawValue = *fVal;
-        if(rawValue > 0)
-            modFactor = rawValue;
-        else
-            modFactor = (1.0 / fabs(rawValue));
-        
-    }
-    
     //========================================
     void startNote (int midiNoteNumber,
                     float velocity,
@@ -144,6 +97,8 @@ public:
         
     }
     //===============================================
+    //std::vector<OperatorAudioElement*> OpElement; //this gets initialized in the processor
+    std::vector<OperatorAudioElement*> OpElement;
 private:
     double fundamental;
     maxiOsc carrierOsc;
@@ -153,4 +108,5 @@ private:
     float modFactor; // modulator frequency = fundamental * modFactor
     double modulatorPitch;
     double modIndex;
+    
 };
