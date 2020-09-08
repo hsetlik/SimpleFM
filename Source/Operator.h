@@ -7,7 +7,7 @@
 
   ==============================================================================
 */
-
+//not used in the operatorToVoice branch
 #pragma once
 #include <JuceHeader.h>
 #include "SynthSound.h"

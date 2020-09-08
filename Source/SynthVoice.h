@@ -72,9 +72,9 @@ public:
                     juce::SynthesiserSound *sound,
                     int currentPitchWheelPosition)
     {
+        fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
         carrierEnv.trigger = 1;
         modulatorEnv.trigger = 1;
-        fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
         modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
         printf("mod pitch: %f\n", modulatorPitch);

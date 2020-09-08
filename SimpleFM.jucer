@@ -32,6 +32,14 @@
       <FILE id="ydsjl7" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
       <FILE id="ozDAyg" name="SynthVoice.h" compile="0" resource="0" file="Source/SynthVoice.h"/>
       <FILE id="mP5yo1" name="SynthSound.h" compile="0" resource="0" file="Source/SynthSound.h"/>
+      <FILE id="WotMxx" name="OperatorGuiComponent.cpp" compile="1" resource="0"
+            file="Source/OperatorGuiComponent.cpp"/>
+      <FILE id="J2Jvd8" name="OperatorGuiComponent.h" compile="0" resource="0"
+            file="Source/OperatorGuiComponent.h"/>
+      <FILE id="hMybas" name="OperatorAudioElements.cpp" compile="1" resource="0"
+            file="Source/OperatorAudioElements.cpp"/>
+      <FILE id="mHE8Dr" name="OperatorAudioElements.h" compile="0" resource="0"
+            file="Source/OperatorAudioElements.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
