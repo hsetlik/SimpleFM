@@ -6,7 +6,7 @@
   ==============================================================================
 */
 #include "PluginEditor.h"
-
+#include "PluginProcessor.h"
 //==============================================================================
 SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), Panel0(0)

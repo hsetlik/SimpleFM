@@ -55,6 +55,7 @@ private:
     juce::Slider factorSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
     //vectors of the above values to be assigned with each operator
+    /*
     std::vector<juce::Slider> cAttackSliders;
     std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> caAttachments;
     std::vector<juce::Slider> cDecaySliders;
@@ -77,7 +78,7 @@ private:
     std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> iAttachments;
     std::vector<juce::Slider> factorSliders;
     std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> fAttachments;
-    
+    */
     OperatorPanel Panel0;
     std::vector<OperatorPanel*> allOperators; //vector to access operators by index
     
