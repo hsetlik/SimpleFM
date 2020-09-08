@@ -9,37 +9,71 @@
 */
 #pragma once
 #include <JuceHeader.h>
-#include "PluginProcessor.h"
+
+//some forward declarations...
+std::vector<juce::Slider> cAttackSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> caAttachments;
+std::vector<juce::Slider> cDecaySliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> cdAttachments;
+std::vector<juce::Slider> cSustainSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> csAttachments;
+std::vector<juce::Slider> cReleaseSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> crAttachments;
+
+std::vector<juce::Slider> mAttackSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> maAttachments;
+std::vector<juce::Slider> mDecaySliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> mdAttachments;
+std::vector<juce::Slider> mSustainSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> msAttachments;
+std::vector<juce::Slider> mReleaseSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> mrAttachments;
+
+std::vector<juce::Slider> indexSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> iAttachments;
+std::vector<juce::Slider> factorSliders;
+std::vector<std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>> fAttachments;
+//end forward declarations
+
 class ModulatorEnvelope : public juce::Component
 {
 public:
-    ModulatorEnvelope()
+    ModulatorEnvelope(int index)
     {
+        pmAttackSlider = &mAttackSliders[index];
+        pmaAttach = &maAttachments[index];
+        pmDecaySlider = &mDecaySliders[index];
+        pmdAttach = &mdAttachments[index];
+        pmSustainSlider = &mSustainSliders[index];
+        pmsAttach = &msAttachments[index];
+        pmReleaseSlider = &mReleaseSliders[index];
+        pmrAttach = &mrAttachments[index];
+        
         setBoundsRelative(0.5f, 0.0f, 0.5f, 0.5f);
-        addAndMakeVisible(&mAttackSlider);
-        mAttackSlider.setName("maSlider");
-        mAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
-        mAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
-        mAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        mAttackSlider.setValue(25.0);
+        addAndMakeVisible(*pmAttackSlider);
+        pmAttackSlider->setName("maSlider");
+        pmAttackSlider->setSliderStyle(juce::Slider::LinearVertical);
+        pmAttackSlider->setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+        pmAttackSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pmAttackSlider->setValue(25.0);
         
-        addAndMakeVisible(&mDecaySlider);
-        mDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
-        mDecaySlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
-        mDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        mDecaySlider.setValue(25.0);
+        addAndMakeVisible(*pmDecaySlider);
+        pmDecaySlider->setSliderStyle(juce::Slider::LinearVertical);
+        pmDecaySlider->setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+        pmDecaySlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pmDecaySlider->setValue(25.0);
         
-        addAndMakeVisible(&mSustainSlider);
-        mSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
-        mSustainSlider.setRange(0.0, 1.0);
-        mSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        mSustainSlider.setValue(0.4);
+        addAndMakeVisible(*pmSustainSlider);
+        pmSustainSlider->setSliderStyle(juce::Slider::LinearVertical);
+        pmSustainSlider->setRange(0.0, 1.0);
+        pmSustainSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pmSustainSlider->setValue(0.4);
         
-        addAndMakeVisible(&mReleaseSlider);
-        mReleaseSlider.setSliderStyle(juce::Slider::LinearVertical);
-        mReleaseSlider.setRange(0.1, 4000.0);
-        mReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        mReleaseSlider.setValue(0.4);
+        addAndMakeVisible(*pmReleaseSlider);
+        pmReleaseSlider->setSliderStyle(juce::Slider::LinearVertical);
+        pmReleaseSlider->setRange(0.1, 4000.0);
+        pmReleaseSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pmReleaseSlider->setValue(0.4);
     };
     ~ModulatorEnvelope(){};
     void resized() override
@@ -47,53 +81,61 @@ public:
         auto area = getLocalBounds();
         auto twentyfifth = getWidth() / 25;
         auto fifth = getWidth() / 5;
-        mAttackSlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
-        mDecaySlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
-        mSustainSlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
-        mReleaseSlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pmAttackSlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pmDecaySlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pmSustainSlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pmReleaseSlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
         
     }
     //data/ object members
-    juce::Slider mAttackSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> maAttach;
-    juce::Slider mDecaySlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mdAttach;
-    juce::Slider mSustainSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> msAttach;
-    juce::Slider mReleaseSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mrAttach;
+    juce::Slider* pmAttackSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pmaAttach;
+    juce::Slider* pmDecaySlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pmdAttach;
+    juce::Slider* pmSustainSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pmsAttach;
+    juce::Slider* pmReleaseSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pmrAttach;
 };
 
 class CarrierEnvelope : public juce::Component
 {
 public:
-    CarrierEnvelope()
+    CarrierEnvelope(int index)
     {
+        //link the member pointers up with the forward-declared vectors
+        pcAttackSlider = &cAttackSliders[index];
+        pcaAttach = &caAttachments[index];
+        pcDecaySlider = &cDecaySliders[index];
+        pcdAttach = &cdAttachments[index];
+        pcSustainSlider = &cSustainSliders[index];
+        pcsAttach = &csAttachments[index];
+        
         setBoundsRelative(0.0f, 0.0f, 0.5f, 0.5f);
-        addAndMakeVisible(&cAttackSlider);
-        cAttackSlider.setName("caSlider");
-        cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
-        cAttackSlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
-        cAttackSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cAttackSlider.setValue(25.0);
+        addAndMakeVisible(*pcAttackSlider);
+        pcAttackSlider->setName("caSlider");
+        pcAttackSlider->setSliderStyle(juce::Slider::LinearVertical);
+        pcAttackSlider->setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+        pcAttackSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pcAttackSlider->setValue(25.0);
         
-        addAndMakeVisible(&cDecaySlider);
-        cDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
-        cDecaySlider.setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
-        cDecaySlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cDecaySlider.setValue(25.0);
+        addAndMakeVisible(*pcDecaySlider);
+        pcDecaySlider->setSliderStyle(juce::Slider::LinearVertical);
+        pcDecaySlider->setRange(0.1, 4000.0); //attack from 0.1 ms to 4 seconds
+        pcDecaySlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pcDecaySlider->setValue(25.0);
         
-        addAndMakeVisible(&cSustainSlider);
-        cSustainSlider.setSliderStyle(juce::Slider::LinearVertical);
-        cSustainSlider.setRange(0.0, 1.0);
-        cSustainSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cSustainSlider.setValue(0.4);
+        addAndMakeVisible(*pcSustainSlider);
+        pcSustainSlider->setSliderStyle(juce::Slider::LinearVertical);
+        pcSustainSlider->setRange(0.0, 1.0);
+        pcSustainSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pcSustainSlider->setValue(0.4);
         
-        addAndMakeVisible(&cReleaseSlider);
-        cReleaseSlider.setSliderStyle(juce::Slider::LinearVertical);
-        cReleaseSlider.setRange(0.1, 4000.0);
-        cReleaseSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-        cReleaseSlider.setValue(0.4);
+        addAndMakeVisible(*pcReleaseSlider);
+        pcReleaseSlider->setSliderStyle(juce::Slider::LinearVertical);
+        pcReleaseSlider->setRange(0.1, 4000.0);
+        pcReleaseSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+        pcReleaseSlider->setValue(0.4);
     }
     ~CarrierEnvelope() {}
     void resized() override
@@ -101,67 +143,71 @@ public:
         auto area = getLocalBounds();
         auto twentyfifth = getWidth() / 25;
         auto fifth = getWidth() / 5;
-        cAttackSlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
-        cDecaySlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
-        cSustainSlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
-        cReleaseSlider.setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pcAttackSlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pcDecaySlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pcSustainSlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
+        pcReleaseSlider->setBounds(area.removeFromLeft(twentyfifth + fifth));
     }
     //data/ object members...
-    juce::Slider cAttackSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> caAttach;
-    juce::Slider cDecaySlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> cdAttach;
-    juce::Slider cSustainSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> csAttach;
-    juce::Slider cReleaseSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> crAttach;
+    juce::Slider* pcAttackSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pcaAttach;
+    juce::Slider* pcDecaySlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pcdAttach;
+    juce::Slider* pcSustainSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pcsAttach;
+    juce::Slider* pcReleaseSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* pcrAttach;
 };
 //add any other panel components before the OperatorPanel class, which must have all other components as members
 class IndexKnob : public juce::Component
 {
 public:
-    IndexKnob()
+    IndexKnob(int index)
     {
-    indexSlider.setSliderStyle(juce::Slider::Rotary);
-    indexSlider.setRange(1.0, 250.0);
-    indexSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-    indexSlider.setValue(100.0);
-    addAndMakeVisible(&indexSlider);
+    indexSlider = &indexSliders[index];
+    iAttach = &iAttachments[index];
+    indexSlider->setSliderStyle(juce::Slider::Rotary);
+    indexSlider->setRange(1.0, 250.0);
+    indexSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    indexSlider->setValue(100.0);
+    addAndMakeVisible(*indexSlider);
     setBoundsRelative(0.0f, 0.5f, 0.5f, 0.5f);
     }
     ~IndexKnob(){}
     void resized() override
     {
-        indexSlider.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+        indexSlider->setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     }
-    juce::Slider indexSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> iAttach;
+    juce::Slider* indexSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* iAttach;
 };
 class FactorKnob : public juce::Component
 {
 public:
-    FactorKnob()
+    FactorKnob(int index)
     {
-    factorSlider.setSliderStyle(juce::Slider::Rotary);
-    factorSlider.setRange(-10.0, 10.0);
-    factorSlider.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
-    factorSlider.setValue(1.0);
-    addAndMakeVisible(&factorSlider);
+    factorSlider = &factorSliders[index];
+    fAttach = &fAttachments[index];
+    factorSlider->setSliderStyle(juce::Slider::Rotary);
+    factorSlider->setRange(-10.0, 10.0);
+    factorSlider->setTextBoxStyle(juce::Slider::TextBoxBelow, false, 50, 20);
+    factorSlider->setValue(1.0);
+    addAndMakeVisible(*factorSlider);
     setBoundsRelative(0.5f, 0.5f, 0.5f, 0.5f);
     }
     ~FactorKnob(){}
     void resized() override
     {
-        factorSlider.setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
+        factorSlider->setBoundsRelative(0.0f, 0.0f, 1.0f, 1.0f);
     }
-    juce::Slider factorSlider;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
+    juce::Slider* factorSlider;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment>* fAttach;
 };
 
 class OperatorPanel : public juce::Component
 {
 public:
-    OperatorPanel(int index)
+    OperatorPanel(int index) : cEnv(index), mEnv(index), iKnob(index), fKnob(index)
     {
         addAndMakeVisible(cEnv);
         addAndMakeVisible(mEnv);
@@ -185,75 +231,75 @@ public:
     {
         //initilize the carrier envelope
         
-        cEnv.cAttackSlider.addListener(thisListener);
+        cEnv.pcAttackSlider->addListener(thisListener);
         juce::String caStr = "cAttack" + juce::String(OpIndex);
-        cEnv.caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, caStr, cEnv.cAttackSlider));
+        cEnv.pcaAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, caStr, *cEnv.pcAttackSlider));
         
-        cEnv.cDecaySlider.addListener(thisListener);
-        cEnv.cdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cDecay" + juce::String(OpIndex), cEnv.cDecaySlider));
+        cEnv.pcDecaySlider->addListener(thisListener);
+        cEnv.pcdAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cDecay" + juce::String(OpIndex), *cEnv.pcDecaySlider));
         
-        cEnv.cSustainSlider.addListener(thisListener);
-        cEnv.csAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cSustain" + juce::String(OpIndex), cEnv.cSustainSlider));
+        cEnv.pcSustainSlider->addListener(thisListener);
+        cEnv.pcsAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cSustain" + juce::String(OpIndex), *cEnv.pcSustainSlider));
         
-        cEnv.cReleaseSlider.addListener(thisListener);
-        cEnv.crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cRelease" + juce::String(OpIndex), cEnv.cReleaseSlider));
+        cEnv.pcReleaseSlider->addListener(thisListener);
+        cEnv.pcrAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "cRelease" + juce::String(OpIndex), *cEnv.pcReleaseSlider));
         //initialize the modulator envelope
         
-        mEnv.mAttackSlider.addListener(thisListener);
-        mEnv.maAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mAttack"+ juce::String(OpIndex), mEnv.mAttackSlider));
+        mEnv.pmAttackSlider->addListener(thisListener);
+        mEnv.pmaAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mAttack"+ juce::String(OpIndex), *mEnv.pmAttackSlider));
         
-        mEnv.mDecaySlider.addListener(thisListener);
-        mEnv.mdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mDecay"+ juce::String(OpIndex), mEnv.mDecaySlider));
+        mEnv.pmDecaySlider->addListener(thisListener);
+        mEnv.pmdAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mDecay"+ juce::String(OpIndex), *mEnv.pmDecaySlider));
         
-        mEnv.mSustainSlider.addListener(thisListener);
-        mEnv.msAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mSustain"+ juce::String(OpIndex), mEnv.mSustainSlider));
+        mEnv.pmSustainSlider->addListener(thisListener);
+        mEnv.pmsAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mSustain"+ juce::String(OpIndex), *mEnv.pmSustainSlider));
         
-        mEnv.mReleaseSlider.addListener(thisListener);
-        mEnv.mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mRelease"+ juce::String(OpIndex), mEnv.mReleaseSlider));
+        mEnv.pmReleaseSlider->addListener(thisListener);
+        mEnv.pmrAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "mRelease"+ juce::String(OpIndex), *mEnv.pmReleaseSlider));
         //initialize the index knob
         
-        iKnob.indexSlider.addListener(thisListener);
-        iKnob.indexSlider.setNumDecimalPlacesToDisplay(1);
-        iKnob.iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "index"+ juce::String(OpIndex), iKnob.indexSlider));
+        iKnob.indexSlider->addListener(thisListener);
+        iKnob.indexSlider->setNumDecimalPlacesToDisplay(1);
+        iKnob.iAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "index"+ juce::String(OpIndex), *iKnob.indexSlider));
         //initialize the factor knob
-        fKnob.factorSlider.addListener(thisListener);
-        fKnob.factorSlider.setNumDecimalPlacesToDisplay(1);
-        fKnob.fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "factor"+ juce::String(OpIndex), fKnob.factorSlider));
+        fKnob.factorSlider->addListener(thisListener);
+        fKnob.factorSlider->setNumDecimalPlacesToDisplay(1);
+        fKnob.fAttach->reset(new juce::AudioProcessorValueTreeState::SliderAttachment(*pTree, "factor"+ juce::String(OpIndex), *fKnob.factorSlider));
     }
     
     void someValueChanged(juce::Slider* slider)
     //NOTE: the pointers below need to be assigned in the editor constructor
     { //call this for each operator in the editor's 'sliderValueChanged' method
-        if(slider == &cEnv.cAttackSlider)
+        if(slider == cEnv.pcAttackSlider)
         {
-            *pcAttackTime = cEnv.cAttackSlider.getValue();
-        } else if(slider == &cEnv.cDecaySlider)
+            *pcAttackTime = cEnv.pcAttackSlider->getValue();
+        } else if(slider == cEnv.pcDecaySlider)
         {
-            *pcDecayTime = cEnv.cDecaySlider.getValue();
-        }else if(slider == &cEnv.cSustainSlider)
+            *pcDecayTime = cEnv.pcDecaySlider->getValue();
+        }else if(slider == cEnv.pcSustainSlider)
         {
-            *pcSustainLevel = cEnv.cSustainSlider.getValue();
-        }else if(slider == &cEnv.cReleaseSlider)
+            *pcSustainLevel = cEnv.pcSustainSlider->getValue();
+        }else if(slider == cEnv.pcReleaseSlider)
         {
-            *pcReleaseTime = cEnv.cReleaseSlider.getValue();
-        }else if(slider == &mEnv.mAttackSlider)
+            *pcReleaseTime = cEnv.pcReleaseSlider->getValue();
+        }else if(slider == mEnv.pmAttackSlider)
         {
-            *pmAttackTime = mEnv.mAttackSlider.getValue();
-        }else if(slider == &mEnv.mDecaySlider)
+            *pmAttackTime = mEnv.pmAttackSlider->getValue();
+        }else if(slider == mEnv.pmDecaySlider)
         {
-            *pmDecayTime = mEnv.mDecaySlider.getValue();
-        }else if(slider == &mEnv.mSustainSlider)
+            *pmDecayTime = mEnv.pmDecaySlider->getValue();
+        }else if(slider == mEnv.pmSustainSlider)
         {
-            *pmSustainLevel = mEnv.mSustainSlider.getValue();
-        }else if(slider == &mEnv.mReleaseSlider)
+            *pmSustainLevel = mEnv.pmSustainSlider->getValue();
+        }else if(slider == mEnv.pmReleaseSlider)
         {
-            *pmReleaseTime = mEnv.mReleaseSlider.getValue();
-        } else if(slider == &iKnob.indexSlider)
+            *pmReleaseTime = mEnv.pmReleaseSlider->getValue();
+        } else if(slider == iKnob.indexSlider)
         {
-            *pfIndex = iKnob.indexSlider.getValue();
-        } else if(slider == &fKnob.factorSlider)
+            *pfIndex = iKnob.indexSlider->getValue();
+        } else if(slider == fKnob.factorSlider)
         {
-            *pfFactor = fKnob.factorSlider.getValue();
+            *pfFactor = fKnob.factorSlider->getValue();
         }
     }
     void addOperatorParameterLayout(int operatorIndex,
