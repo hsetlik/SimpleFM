@@ -7,7 +7,7 @@
 */
 
 #include "PluginProcessor.h"
-#include "PluginEditor.h"
+
 
 juce::AudioProcessorValueTreeState::ParameterLayout createOpParameterLayout()
 {

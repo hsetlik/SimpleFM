@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "SynthSound.h"
 #include "SynthVoice.h"
+#include "OperatorPanelComponent.h"
 //==============================================================================
 /**
 */
@@ -92,3 +93,5 @@ private:
     double lastSampleRate;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessor)
 };
+
+#include "PluginEditor.h"

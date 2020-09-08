@@ -9,7 +9,7 @@
 */
 #pragma once
 #include <JuceHeader.h>
-
+#include "PluginProcessor.h"
 class ModulatorEnvelope : public juce::Component
 {
 public:
@@ -181,7 +181,7 @@ public:
         mEnv.setBounds(area.removeFromLeft(2 * quarter));
         cEnv.setBounds(area.removeFromLeft(2 * quarter));
     }
-    void initializeAll(juce::AudioProcessorValueTreeState* pTree, juce::Slider::Listener* thisListener, int index)
+    void initializeAll(juce::AudioProcessorValueTreeState* pTree, juce::Slider::Listener* thisListener)
     {
         //initilize the carrier envelope
         
