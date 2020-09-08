@@ -8,6 +8,7 @@
   ==============================================================================
 */
 //not used in the operatorToVoice branch
+/*
 #pragma once
 #include <JuceHeader.h>
 #include "SynthSound.h"
@@ -74,3 +75,4 @@ private:
     double frequency; //post-modulation pitch
     //note: frequency = (fundamental * modFactor) + (*modEnv * modDepth)
 };
+*/

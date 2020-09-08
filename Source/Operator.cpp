@@ -8,6 +8,7 @@
   ==============================================================================
 */
 //not used in the operatorToVoice branch
+/*
 #include "Operator.h"
 
 OperatorPanel::OperatorPanel()
@@ -66,4 +67,5 @@ OperatorVoice::OperatorVoice()
 {
     
 }
+ */
 
