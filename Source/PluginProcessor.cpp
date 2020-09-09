@@ -121,19 +121,43 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
     }
     thisSynth.clearSounds();
     thisSynth.addSound(new SynthSound());
+    
     //value sets need to be added like so
+    
     ParameterValSet set0;
-    ValueSets.push_back(set0);
     ParameterValSet set1;
-    ValueSets.push_back(set1);
     ParameterValSet set2;
-    ValueSets.push_back(set2);
     ParameterValSet set3;
-    ValueSets.push_back(set3);
     ParameterValSet set4;
-    ValueSets.push_back(set4);
     ParameterValSet set5;
+    ValueSets.push_back(set1);
+    ValueSets.push_back(set2);
+    ValueSets.push_back(set3);
+    ValueSets.push_back(set4);
+    ValueSets.push_back(set0);
     ValueSets.push_back(set5);
+    
+    for(int i = 0; i < 6; ++i) //directly accessing data members with = works
+    {
+        
+        ValueSets[i].cAttackTime = 0;
+        ValueSets[i].cDecayTime = 0;
+        ValueSets[i].cReleaseTime = 0;
+        ValueSets[i].cSustainLevel = 0;
+        
+        ValueSets[i].cAttackTime = 0;
+        ValueSets[i].cDecayTime = 0;
+        ValueSets[i].cReleaseTime = 0;
+        ValueSets[i].cSustainLevel = 0;
+        
+        ValueSets[i].mAttackTime = 0;
+        ValueSets[i].mDecayTime = 0;
+        ValueSets[i].mReleaseTime = 0;
+        ValueSets[i].mSustainLevel = 0;
+        
+        ValueSets[i].fFactor = 0.0;
+        ValueSets[i].fIndex = 0.0;
+    }
 }
 
 SimpleFmAudioProcessor::~SimpleFmAudioProcessor()
@@ -251,8 +275,9 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
             for(int n = 0; n < ValueSets.size(); ++n) //getting the parameters per voice
             {
                 juce::String iStr = juce::String(n);
-                thisVoice->voiceValueSet[i].setCAttack(tree.getRawParameterValue("cAttack" + iStr));
-                thisVoice->voiceValueSet[i].setCDecay(tree.getRawParameterValue("cDecay" + iStr));
+                juce::String caStr = "cAttack" + iStr;
+                thisVoice->voiceValueSet[i].cAttackTime = *(tree.getRawParameterValue(caStr));
+                thisVoice->voiceValueSet[i].cDecayTime = *(tree.getRawParameterValue("cDecay" + iStr));
                 thisVoice->voiceValueSet[i].setCSustain(tree.getRawParameterValue("cSustain" + iStr));
                 thisVoice->voiceValueSet[i].setCRelease(tree.getRawParameterValue("cRelease" + iStr));
                 
