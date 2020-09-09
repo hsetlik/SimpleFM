@@ -39,6 +39,14 @@
             file="Source/OperatorAudioElement.cpp"/>
       <FILE id="mHE8Dr" name="OperatorAudioElement.h" compile="0" resource="0"
             file="Source/OperatorAudioElement.h"/>
+      <FILE id="KbSmp2" name="MixerAudioElement.cpp" compile="1" resource="0"
+            file="Source/MixerAudioElement.cpp"/>
+      <FILE id="WFgxIH" name="MixerAudioElement.h" compile="0" resource="0"
+            file="Source/MixerAudioElement.h"/>
+      <FILE id="AD7PpT" name="MixerComponent.cpp" compile="1" resource="0"
+            file="Source/MixerComponent.cpp"/>
+      <FILE id="wlvPVP" name="MixerComponent.h" compile="0" resource="0"
+            file="Source/MixerComponent.h"/>
     </GROUP>
   </MAINGROUP>
   <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1" JUCE_VST3_CAN_REPLACE_VST2="0"/>
