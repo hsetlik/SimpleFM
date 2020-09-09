@@ -84,8 +84,7 @@ public:
     std::vector<double> fIndeces{0, 0, 0, 0, 0, 0};
     std::vector<double> fFactors{0, 0, 0, 0, 0, 0};
     
-    OperatorAudioElement oe0;
-    OperatorAudioElement oe1;
+    std::vector<ParameterValSet> ValueSets;
 private:
     juce::Synthesiser thisSynth;
     SynthVoice* thisVoice;

@@ -12,79 +12,60 @@
 #include <JuceHeader.h>
 #include "maximilian.h"
 
-class OperatorAudioElement
-{
-public:
-    OperatorAudioElement(int index);
-    ~OperatorAudioElement() {}
-    maxiOsc carrierOsc;
-    maxiOsc modulatorOsc;
-    maxiEnv carrierEnv;
-    maxiEnv modulatorEnv;
-    //each of the set... functions gets called for each operator on each voice in the processor
-    void setCAttack(std::atomic<float>* attack)
-    {
-        carrierEnv.setAttack(*attack);
-    }
-    void setCDecay(std::atomic<float>* decay)
-    {
-        carrierEnv.setDecay(*decay);
-    }
-    void setCSustain(std::atomic<float>* sustain)
-    {
-        carrierEnv.setSustain(*sustain);
-    }
-    void setCRelease(std::atomic<float>* release)
-    {
-        carrierEnv.setRelease(*release);
-    }
-    void setMAttack(std::atomic<float>* attack)
-    {
-        modulatorEnv.setAttack(*attack);
-    }
-    void setMDecay(std::atomic<float>* decay)
-    {
-        modulatorEnv.setDecay(*decay);
-    }
-    void setMSustain(std::atomic<float>* sustain)
-    {
-        modulatorEnv.setSustain(*sustain);
-    }
-    void setMRelease(std::atomic<float>* release)
-    {
-        modulatorEnv.setRelease(*release);
-    }
-    void setIndexVal(std::atomic<float>* iVal)
-    {
-        modIndex = *iVal;
-    }
-    void setFactorVal(std::atomic<float>* fVal)
-    {
-        float rawValue = *fVal;
-        if(rawValue > 0)
-            modFactor = rawValue;
-        else
-            modFactor = (1.0 / fabs(rawValue));
-        
-    }
-    float modFactor;
-    float modPitch;
-    float modIndex;
-    int OpIndex;
-};
-
-struct OperatorParameterNumbers
+struct ParameterValSet
 {
     float cAttackTime;
+    void setCAttack(std::atomic<float>* value)
+    {
+        cAttackTime = *value;
+    }
     float cDecayTime;
+    void setCDecay(std::atomic<float>* value)
+    {
+        cDecayTime = *value;
+    }
     float cSustainLevel;
+    void setCSustain(std::atomic<float>* value)
+    {
+        cSustainLevel = *value;
+    }
     float cReleaseTime;
-    
+    void setCRelease(std::atomic<float>* value)
+    {
+        cReleaseTime = *value;
+    }
     float mAttackTime;
+    void setMAttack(std::atomic<float>* value)
+    {
+        mAttackTime = *value;
+    }
     float mDecayTime;
+    void setMDecay(std::atomic<float>* value)
+    {
+        mDecayTime = *value;
+    }
     float mSustainLevel;
+    void setMSustain(std::atomic<float>* value)
+    {
+        mSustainLevel = *value;
+    }
     float mReleaseTime;
+    void setMRelease(std::atomic<float>* value)
+    {
+        mReleaseTime = *value;
+    }
     
     double fIndex;
+    void setIndex(std::atomic<float>* value)
+    {
+        fIndex = *value;
+    }
     double fFactor;
+    void setFactor(std::atomic<float>* value)
+    {
+       fFactor = *value;
+    }
 };
+
+
+

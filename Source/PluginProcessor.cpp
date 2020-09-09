@@ -112,7 +112,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createLayout(2)), oe0(0), oe1(1)
+        tree(*this, nullptr, "ALLPARAMETERS", createLayout(2))
 #endif
 {
     for(int i = 0; i < 6; ++i)
@@ -121,11 +121,19 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
     }
     thisSynth.clearSounds();
     thisSynth.addSound(new SynthSound());
-    static OperatorAudioElement* poe0 = &oe0;
-    for(int i = 0; i < 1; ++i)
-    {
-        thisVoice->OpElement.add(poe0);
-    }
+    //value sets need to be added like so
+    ParameterValSet set0;
+    ValueSets.push_back(set0);
+    ParameterValSet set1;
+    ValueSets.push_back(set1);
+    ParameterValSet set2;
+    ValueSets.push_back(set2);
+    ParameterValSet set3;
+    ValueSets.push_back(set3);
+    ParameterValSet set4;
+    ValueSets.push_back(set4);
+    ParameterValSet set5;
+    ValueSets.push_back(set5);
 }
 
 SimpleFmAudioProcessor::~SimpleFmAudioProcessor()
@@ -240,21 +248,21 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         if((thisVoice =  dynamic_cast<SynthVoice*>(thisSynth.getVoice(i))))
         {
             //call the callbacks for all the parameters
-            for(int n = 0; n < thisVoice->OpElement.size(); ++n) //getting the parameters per voice
+            for(int n = 0; n < ValueSets.size(); ++n) //getting the parameters per voice
             {
                 juce::String iStr = juce::String(n);
-                thisVoice->OpElement[n]->setCAttack(tree.getRawParameterValue("cAttack" + iStr));
-                thisVoice->OpElement[n]->setCDecay(tree.getRawParameterValue("cDecay" + iStr));
-                thisVoice->OpElement[n]->setCSustain(tree.getRawParameterValue("cSustain" + iStr));
-                thisVoice->OpElement[n]->setCRelease(tree.getRawParameterValue("cRelease" + iStr));
+                thisVoice->voiceValueSet[i].setCAttack(tree.getRawParameterValue("cAttack" + iStr));
+                thisVoice->voiceValueSet[i].setCDecay(tree.getRawParameterValue("cDecay" + iStr));
+                thisVoice->voiceValueSet[i].setCSustain(tree.getRawParameterValue("cSustain" + iStr));
+                thisVoice->voiceValueSet[i].setCRelease(tree.getRawParameterValue("cRelease" + iStr));
                 
-                thisVoice->OpElement[n]->setMAttack(tree.getRawParameterValue("mAttack" + iStr));
-                thisVoice->OpElement[n]->setMDecay(tree.getRawParameterValue("mDecay" + iStr));
-                thisVoice->OpElement[n]->setMSustain(tree.getRawParameterValue("mSustain" + iStr));
-                thisVoice->OpElement[n]->setMRelease(tree.getRawParameterValue("mRelease" + iStr));
+                thisVoice->voiceValueSet[i].setMAttack(tree.getRawParameterValue("mAttack" + iStr));
+                thisVoice->voiceValueSet[i].setMDecay(tree.getRawParameterValue("mDecay" + iStr));
+                thisVoice->voiceValueSet[i].setMSustain(tree.getRawParameterValue("mSustain" + iStr));
+                thisVoice->voiceValueSet[i].setMRelease(tree.getRawParameterValue("mRelease" + iStr));
                 
-                thisVoice->OpElement[n]->setIndexVal(tree.getRawParameterValue("index" + iStr));
-                thisVoice->OpElement[n]->setFactorVal(tree.getRawParameterValue("factor" + iStr));
+                thisVoice->voiceValueSet[i].setIndex(tree.getRawParameterValue("index" + iStr));
+                thisVoice->voiceValueSet[i].setFactor(tree.getRawParameterValue("factor" + iStr));
             }
         }
     }

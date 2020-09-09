@@ -32,17 +32,13 @@ public:
         modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
         printf("mod pitch: %f\n", modulatorPitch);
-        /*
-        carrierEnv.setAttack(150);
-        carrierEnv.setDecay(1500);
-        carrierEnv.setSustain(0.7);
-        carrierEnv.setRelease(900);
-        
-        modulatorEnv.setAttack(1600);
-        modulatorEnv.setDecay(1200);
-        modulatorEnv.setSustain(0.4);
-        modulatorEnv.setRelease(800);
-         */
+       for(int i : modPitches)
+       {
+           cEnvs[i].trigger = 1;
+           mEnvs[i].trigger = 1;
+           modFactors[i] = voiceValueSet[i].fFactor;
+           modPitches[i] = fundamental * modFactors[i];
+       }
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
@@ -50,6 +46,11 @@ public:
         carrierEnv.trigger = 0;
         modulatorEnv.trigger = 0;
         allowTailOff = true;
+        for(int i : modPitches)
+        {
+            cEnvs[i].trigger = 0;
+            mEnvs[i].trigger = 0;
+        }
         if(velocity == 0)
             clearCurrentNote();
     }
@@ -97,14 +98,23 @@ public:
         
     }
     //===============================================
-    juce::OwnedArray<OperatorAudioElement> OpElement;
+    ParameterValSet voiceValueSet[6];
 private:
     double fundamental;
     maxiOsc carrierOsc;
     maxiOsc modulatorOsc;
     maxiEnv carrierEnv;
     maxiEnv modulatorEnv;
-    float modFactor; // modulator frequency = fundamental * modFactor
+    //==============================================
+    maxiOsc cOscs[6];
+    maxiOsc mOscs[6];
+    maxiEnv cEnvs[6];
+    maxiEnv mEnvs[6];
+    float modFactors[6];
+    float modPitches[6];
+    
+    //===============================================
+    float modFactor;
     double modulatorPitch;
     double modIndex;
     
