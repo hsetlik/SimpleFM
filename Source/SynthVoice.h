@@ -97,8 +97,7 @@ public:
         
     }
     //===============================================
-    //std::vector<OperatorAudioElement*> OpElement; //this gets initialized in the processor
-    std::vector<OperatorAudioElement*> OpElement;
+    juce::OwnedArray<OperatorAudioElement> OpElement;
 private:
     double fundamental;
     maxiOsc carrierOsc;

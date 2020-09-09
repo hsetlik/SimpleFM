@@ -112,7 +112,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createParameterLayout()), oe0(0), oe1(1)
+        tree(*this, nullptr, "ALLPARAMETERS", createLayout(2)), oe0(0), oe1(1)
 #endif
 {
     for(int i = 0; i < 6; ++i)
@@ -121,10 +121,10 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
     }
     thisSynth.clearSounds();
     thisSynth.addSound(new SynthSound());
-    OperatorAudioElement* poe0 = &oe0;
+    static OperatorAudioElement* poe0 = &oe0;
     for(int i = 0; i < 1; ++i)
     {
-        thisVoice->OpElement.push_back(poe0);
+        thisVoice->OpElement.add(poe0);
     }
 }
 
