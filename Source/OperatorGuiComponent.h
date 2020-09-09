@@ -16,6 +16,7 @@ class OperatorGuiComponent : public juce::Component
 public:
     OperatorGuiComponent(int index, juce::Slider::Listener* thisListener);
     ~OperatorGuiComponent() {}
+    void ReinitOperator(juce::Slider::Listener* thisListener);
     void resized() override;
     int ComponentIndex;
     juce::Slider cAttackSlider;

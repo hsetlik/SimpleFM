@@ -34,7 +34,12 @@ private:
     SimpleFmAudioProcessor& audioProcessor;
     std::vector<OperatorGuiComponent*> OpComps;
     OperatorGuiComponent op0;
-    //OperatorGuiComponent op1;
+    OperatorGuiComponent op1;
+    OperatorGuiComponent op2;
+    OperatorGuiComponent op3;
+    OperatorGuiComponent op4;
+    OperatorGuiComponent op5;
+    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)
 };
