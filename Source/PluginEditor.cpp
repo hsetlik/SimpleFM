@@ -64,7 +64,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
         ("cSustainParam" + iStr),
          OpComps[i]->cSustainSlider));
         OpComps[i]->crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("cDecayParam" + iStr),
+        ("cReleaseParam" + iStr),
          OpComps[i]->cReleaseSlider));
         
         OpComps[i]->maAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
@@ -99,7 +99,7 @@ SimpleFmAudioProcessorEditor::~SimpleFmAudioProcessorEditor()
 void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
-    /*
+    
     g.setColour(juce::Colours::yellow);
     g.fillRect(OpComps[0]->getBounds());
     g.setColour(juce::Colours::lavender);
@@ -112,7 +112,7 @@ void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
     g.fillRect(OpComps[4]->getBounds());
     g.setColour(juce::Colours::lightgrey);
     g.fillRect(OpComps[5]->getBounds());
-     */
+    
     for(int i = 0; i < OpComps.size(); ++i)
     {
         OpComps[i]->paint(g);
@@ -131,15 +131,6 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
     for(int i = 0; i < OpComps.size(); ++i)
     {
-        float third = (1.0f)/(3.0f);
-        float half = (1.0f)/(2.0f);
-        /*
-        op0.setBoundsRelative(0.0f, 0.0f, third, half);
-        op1.setBoundsRelative(third, 0.0f, third, half);
-        op2.setBoundsRelative(2 * third, 0.0f, third, half);
-        op3.setBoundsRelative(0.0f, half, third, half);
-        op4.setBoundsRelative(third, half, third, half);
-        op5.setBoundsRelative(2 * third, half, third, half);
-         */
+        
     }
 }
