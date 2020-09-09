@@ -15,17 +15,17 @@
 struct ParameterValSet
 {
     std::atomic<float>* cAttackValues[6];
-    float cDecayValues[6];
-    float cSustainValues[6];
-    float cReleaseValues[6];
+    std::atomic<float>* cDecayValues[6];
+    std::atomic<float>* cSustainValues[6];
+    std::atomic<float>* cReleaseValues[6];
     
-    float mAttackValues[6];
-    float mDecayValues[6];
-    float mSustainValues[6];
-    float mReleaseValues[6];
+    std::atomic<float>* mAttackValues[6];
+    std::atomic<float>* mDecayValues[6];
+    std::atomic<float>* mSustainValues[6];
+    std::atomic<float>* mReleaseValues[6];
     
-    double modIndexValues[6];
-    double modFactorValues[6];
+    std::atomic<float>* modIndexValues[6];
+    std::atomic<float>* modFactorValues[6];
 };
 
 struct MaxiObjectSet
@@ -34,6 +34,8 @@ struct MaxiObjectSet
     maxiEnv mMaxiEnvelopes[6];
     maxiOsc cMaxiOsc[6];
     maxiOsc mMaxiOsc[6];
+    float maxiModIndeces[6];
+    float maxiModFactors[6];
 };
 
 

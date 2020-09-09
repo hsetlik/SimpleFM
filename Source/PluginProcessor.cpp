@@ -240,6 +240,17 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
             {
                 juce::String iStr = juce::String(n);
                 thisVoice->caVoiceSet(n, tree.getRawParameterValue("cAttackParam" + iStr));
+                thisVoice->cdVoiceSet(n, tree.getRawParameterValue("cDecayParam" + iStr));
+                thisVoice->csVoiceSet(n, tree.getRawParameterValue("cSustainParam" + iStr));
+                thisVoice->crVoiceSet(n, tree.getRawParameterValue("cReleaseParam" + iStr));
+                
+                thisVoice->maVoiceSet(n, tree.getRawParameterValue("mAttackParam" + iStr));
+                thisVoice->mdVoiceSet(n, tree.getRawParameterValue("mDecayParam" + iStr));
+                thisVoice->msVoiceSet(n, tree.getRawParameterValue("mSustainParam" + iStr));
+                thisVoice->mrVoiceSet(n, tree.getRawParameterValue("mReleaseParam" + iStr));
+                
+                thisVoice->iVoiceSet(n, tree.getRawParameterValue("indexParam" + iStr));
+                thisVoice->fVoiceSet(n, tree.getRawParameterValue("factorParam" + iStr));
             }
             
         }

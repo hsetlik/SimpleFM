@@ -26,6 +26,51 @@ public:
         voiceParamValues.cAttackValues[index] = value;
         voiceMaxiObjs.cMaxiEnvelopes[index].setAttack(*voiceParamValues.cAttackValues[index]);
     }
+    void cdVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.cDecayValues[index] = value;
+        voiceMaxiObjs.cMaxiEnvelopes[index].setDecay(*voiceParamValues.cDecayValues[index]);
+    }
+    void csVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.cSustainValues[index] = value;
+        voiceMaxiObjs.cMaxiEnvelopes[index].setSustain(*voiceParamValues.cSustainValues[index]);
+    }
+    void crVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.cReleaseValues[index] = value;
+        voiceMaxiObjs.cMaxiEnvelopes[index].setRelease(*value);
+    }
+    void maVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.mAttackValues[index] = value;
+        voiceMaxiObjs.mMaxiEnvelopes[index].setAttack(*value);
+    }
+    void mdVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.mDecayValues[index] = value;
+        voiceMaxiObjs.mMaxiEnvelopes[index].setDecay(*value);
+    }
+    void msVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.mSustainValues[index] = value;
+        voiceMaxiObjs.mMaxiEnvelopes[index].setSustain(*value);
+    }
+    void mrVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.mReleaseValues[index] = value;
+        voiceMaxiObjs.mMaxiEnvelopes[index].setRelease(*value);
+    }
+    void iVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.modIndexValues[index] = value;
+        voiceMaxiObjs.maxiModIndeces[index] = *value;
+    }
+    void fVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.modFactorValues[index] = value;
+        voiceMaxiObjs.maxiModFactors[index] = *value;
+    }
     //========================================
     void startNote (int midiNoteNumber,
                     float velocity,
