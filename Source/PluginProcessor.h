@@ -59,11 +59,10 @@ public:
     int numOperators = 6;
     juce::AudioProcessorValueTreeState tree;
     
-    
+    SynthVoice* thisVoice;
     //vectors of the above
 private:
     juce::Synthesiser thisSynth;
-    SynthVoice* thisVoice;
     double lastSampleRate;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessor)
 };

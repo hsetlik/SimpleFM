@@ -131,6 +131,7 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
     for(int i = 0; i < OpComps.size(); ++i)
     {
-        
+        if(slider == &OpComps[i]->cAttackSlider)
+            printf("cAttack #%d changed\n", i);
     }
 }
