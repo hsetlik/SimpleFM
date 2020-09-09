@@ -80,37 +80,7 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
     for(int i = 0; i < OpComps.size(); ++i)
     {
-        if(slider == &OpComps[i]->cAttackSlider)
-        {
-            audioProcessor.cAttackTimes[i] = OpComps[i]->cAttackSlider.getValue();
-        } else if(slider == &OpComps[i]->cDecaySlider)
-        {
-            audioProcessor.cDecayTime = OpComps[i]->cDecaySlider.getValue();
-        }else if(slider == &OpComps[i]->cSustainSlider)
-        {
-            audioProcessor.cSustainLevels[i] = OpComps[i]->cSustainSlider.getValue();
-        }else if(slider == &OpComps[i]->cReleaseSlider)
-        {
-            audioProcessor.cReleaseTimes[i] = OpComps[i]->cReleaseSlider.getValue();
-        }else if(slider == &OpComps[i]->mAttackSlider)
-        {
-            audioProcessor.mAttackTimes[i] = OpComps[i]->mAttackSlider.getValue();
-        }else if(slider == &OpComps[i]->mDecaySlider)
-        {
-            audioProcessor.mDecayTimes[i] = OpComps[i]->mDecaySlider.getValue();
-        }else if(slider == &OpComps[i]->mSustainSlider)
-        {
-            audioProcessor.mSustainLevels[i] = OpComps[i]->mSustainSlider.getValue();
-        }else if(slider == &OpComps[i]->mReleaseSlider)
-        {
-            audioProcessor.mReleaseTimes[i] = OpComps[i]->mReleaseSlider.getValue();
-        } else if(slider == &OpComps[i]->indexSlider)
-        {
-            audioProcessor.fIndeces[i] = OpComps[i]->indexSlider.getValue();
-        } else if(slider == &OpComps[i]->factorSlider)
-        {
-            audioProcessor.fFactors[i] = OpComps[i]->factorSlider.getValue();
-        }
+        
     }
     
 }
