@@ -23,36 +23,36 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     {
         juce::String iStr = juce::String(i);
         OpComps[i]->caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-                                                                                           ("cAttack" + iStr),
+                                                                                           ("cAttackParam" + iStr),
                                                                                            OpComps[i]->cAttackSlider));
         OpComps[i]->cdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-                                                                                           ("cDecay" + iStr),
+                                                                                           ("cDecayParam" + iStr),
                                                                                             OpComps[i]->cDecaySlider));
         OpComps[i]->csAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("cSustain" + iStr),
+        ("cSustainParam" + iStr),
          OpComps[i]->cSustainSlider));
         OpComps[i]->crAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("cDecay" + iStr),
+        ("cDecayParam" + iStr),
          OpComps[i]->cReleaseSlider));
         
         OpComps[i]->maAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("mAttack" + iStr),
+        ("mAttackParam" + iStr),
          OpComps[i]->mAttackSlider));
         OpComps[i]->mdAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("mDecay" + iStr),
+        ("mDecayParam" + iStr),
          OpComps[i]->mDecaySlider));
         OpComps[i]->msAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("mSustain" + iStr),
+        ("mSustainParam" + iStr),
          OpComps[i]->mSustainSlider));
         OpComps[i]->mrAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("mRelease" + iStr),
+        ("mReleaseParam" + iStr),
          OpComps[i]->mReleaseSlider));
         
         OpComps[i]->iAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("index" + iStr),
+        ("indexParam" + iStr),
          OpComps[i]->indexSlider));
         OpComps[i]->fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
-        ("factor" + iStr),
+        ("factorParam" + iStr),
         OpComps[i]->factorSlider));
     }
 }

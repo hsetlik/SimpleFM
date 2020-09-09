@@ -13,31 +13,31 @@ juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cAttack", "Attack", 0.1f, 4000.0f, 1.0f));
+               ("cAttackParam", "Attack", 0.1f, 4000.0f, 1.0f));
             // identifier, name, minimum Value, maximumValue, default value
     //use more layout.add calls to add more parameters
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cDecay", "Decay", 0.1f, 4000.0f, 55.0f));
+               ("cDecayParam", "Decay", 0.1f, 4000.0f, 55.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cSustain", "Sustain", 0.0f, 1.0f, 0.6f));
+               ("cSustainParam", "Sustain", 0.0f, 1.0f, 0.6f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cRelease", "Release", 0.1f, 4000.0f, 250.0f));
+               ("cReleaseParam", "Release", 0.1f, 4000.0f, 250.0f));
     //now for the modulator envelope
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mAttack", "Attack", 0.1f, 4000.0f, 1.0f));
+               ("mAttackParam", "Attack", 0.1f, 4000.0f, 1.0f));
             // identifier, name, minimum Value, maximumValue, default value
     //use more layout.add calls to add more parameters
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mDecay", "Decay", 0.1f, 4000.0f, 55.0f));
+               ("mDecayParam", "Decay", 0.1f, 4000.0f, 55.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mSustain", "Sustain", 0.0f, 1.0f, 0.6f));
+               ("mSustainParam", "Sustain", 0.0f, 1.0f, 0.6f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mRelease", "Release", 0.1f, 4000.0f, 250.0f));
+               ("mReleaseParam", "Release", 0.1f, 4000.0f, 250.0f));
     
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("index", "Mod Index", 0.0f, 250.0f, 100.0f));
+               ("indexParam", "Mod Index", 0.0f, 250.0f, 100.0f));
     layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("factor", "Mod Factor", -10.0f, 10.0f, 1.0f));
+               ("factorParam", "Mod Factor", -10.0f, 10.0f, 1.0f));
     
     
     return layout;
@@ -51,27 +51,27 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         juce::String iStr = juce::String(i);
         //setting up the distinct name/ID strings for each operator
         //for the carrier envelope
-        juce::String cAttackID = "cAttack" + iStr;
+        juce::String cAttackID = "cAttackParam" + iStr;
         juce::String cAttackName = "Carrier " + iStr + " Attack";
-        juce::String cDecayID = "cDecay" + iStr;
+        juce::String cDecayID = "cDecayParam" + iStr;
         juce::String cDecayName = "Carrier " + iStr + " Decay";
-        juce::String cSustainID = "cSustain" + iStr;
+        juce::String cSustainID = "cSustainParam" + iStr;
         juce::String cSustainName = "Carrier " + iStr + " Sustain";
-        juce::String cReleaseID = "cRelease" + iStr;
+        juce::String cReleaseID = "cReleaseParam" + iStr;
         juce::String cReleaseName = "Carrier " + iStr + " Release";
         //for the modualtor envelope
-        juce::String mAttackID = "mAttack" + iStr;
+        juce::String mAttackID = "mAttackParam" + iStr;
         juce::String mAttackName = "Modulator " + iStr + " Attack";
-        juce::String mDecayID = "mDecay" + iStr;
+        juce::String mDecayID = "mDecayParam" + iStr;
         juce::String mDecayName = "Modulator " + iStr + " Decay";
-        juce::String mSustainID = "mSustain" + iStr;
+        juce::String mSustainID = "mSustainParam" + iStr;
         juce::String mSustainName = "Modulator " + iStr + " Sustain";
-        juce::String mReleaseID = "mRelease" + iStr;
+        juce::String mReleaseID = "mReleaseParam" + iStr;
         juce::String mReleaseName = "Modulator " + iStr + " Release";
         //for the knobs
-        juce::String iKnobID = "index" + iStr;
+        juce::String iKnobID = "indexParam" + iStr;
         juce::String iKnobName = "Operator " + iStr + " Index";
-        juce::String fKnobID = "factor" + iStr;
+        juce::String fKnobID = "factorParam" + iStr;
         juce::String fKnobName = "Operator " + iStr + " Factor";
         //creating the parameters...
         layout.add(std::make_unique<juce::AudioParameterFloat>
