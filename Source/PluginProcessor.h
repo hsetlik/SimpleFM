@@ -56,35 +56,11 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    int numOperators = 6;
     juce::AudioProcessorValueTreeState tree;
     
-    float cAttackTime = 25.0f;
-    float cDecayTime = 25.0f;
-    float cSustainLevel = 0.4f;
-    float cReleaseTime = 25.0f;
     
-    float mAttackTime = 25.0f;
-    float mDecayTime = 25.0f;
-    float mSustainLevel = 0.4f;
-    float mReleaseTime = 25.0f;
-    
-    double fIndex = 80.0;
-    double fFactor = 1.0;
     //vectors of the above
-    std::vector<float> cAttackTimes{0, 0, 0, 0, 0, 0};
-    std::vector<float> cDecayTimes{0, 0, 0, 0, 0, 0};
-    std::vector<float> cSustainLevels{0, 0, 0, 0, 0, 0};
-    std::vector<float> cReleaseTimes{0, 0, 0, 0, 0, 0};
-    
-    std::vector<float> mAttackTimes{0, 0, 0, 0, 0, 0};
-    std::vector<float> mDecayTimes{0, 0, 0, 0, 0, 0};
-    std::vector<float> mSustainLevels{0, 0, 0, 0, 0, 0};
-    std::vector<float> mReleaseTimes{0, 0, 0, 0, 0, 0};
-    
-    std::vector<double> fIndeces{0, 0, 0, 0, 0, 0};
-    std::vector<double> fFactors{0, 0, 0, 0, 0, 0};
-    
-    std::vector<ParameterValSet> ValueSets;
 private:
     juce::Synthesiser thisSynth;
     SynthVoice* thisVoice;

@@ -32,13 +32,7 @@ public:
         modulatorPitch = fundamental * modFactor;
         printf("fundamental pitch: %f\n", fundamental);
         printf("mod pitch: %f\n", modulatorPitch);
-       for(int i : modPitches)
-       {
-           cEnvs[i].trigger = 1;
-           mEnvs[i].trigger = 1;
-           modFactors[i] = voiceValueSet[i].fFactor;
-           modPitches[i] = fundamental * modFactors[i];
-       }
+       
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
@@ -46,11 +40,6 @@ public:
         carrierEnv.trigger = 0;
         modulatorEnv.trigger = 0;
         allowTailOff = true;
-        for(int i : modPitches)
-        {
-            cEnvs[i].trigger = 0;
-            mEnvs[i].trigger = 0;
-        }
         if(velocity == 0)
             clearCurrentNote();
     }
@@ -98,7 +87,8 @@ public:
         
     }
     //===============================================
-    ParameterValSet voiceValueSet[6];
+    ParameterValSet voiceParamValues;
+    MaxiObjectSet voiceMaxiObjs;
 private:
     double fundamental;
     maxiOsc carrierOsc;
@@ -106,12 +96,6 @@ private:
     maxiEnv carrierEnv;
     maxiEnv modulatorEnv;
     //==============================================
-    maxiOsc cOscs[6];
-    maxiOsc mOscs[6];
-    maxiEnv cEnvs[6];
-    maxiEnv mEnvs[6];
-    float modFactors[6];
-    float modPitches[6];
     
     //===============================================
     float modFactor;
