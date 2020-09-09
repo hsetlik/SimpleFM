@@ -112,7 +112,7 @@ SimpleFmAudioProcessor::SimpleFmAudioProcessor()
                      #endif
                        ),
         //Putting stuff into the valueTree
-        tree(*this, nullptr, "ALLPARAMETERS", createLayout(2))
+        tree(*this, nullptr, "ALLPARAMETERS", createLayout(6))
 #endif
 {
     for(int i = 0; i < 6; ++i)
@@ -238,9 +238,8 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
         {
             for(int n = 0; n < numOperators; ++n)
             {
-              //for each parameter:
-                //1. assign the result of getParameterValue() to the appropriate spot in the voice's voiceParamValues struct
-                //2. take the value from that spot and assign it to the appropriate maxi object
+                juce::String iStr = juce::String(n);
+                thisVoice->caVoiceSet(n, tree.getRawParameterValue("cAttackParam" + iStr));
             }
             
         }

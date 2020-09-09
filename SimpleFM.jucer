@@ -3,7 +3,8 @@
 <JUCERPROJECT id="jUz8gi" name="SimpleFM" projectType="audioplug" useAppConfig="0"
               addUsingNamespaceToJuceHeader="0" displaySplashScreen="1" jucerFormatVersion="1"
               pluginCharacteristicsValue="pluginIsSynth,pluginWantsMidiIn"
-              headerPath="/Users/hayden/Desktop/Programming/Maximilian/Maximilian/src">
+              headerPath="/Users/hayden/Desktop/Programming/Maximilian/Maximilian/src"
+              cppLanguageStandard="11">
   <MAINGROUP id="Ax74qE" name="SimpleFM">
     <GROUP id="{BE32745E-5A34-0691-C8A8-D3437CBFECD0}" name="Source">
       <GROUP id="{4F1A466B-7B37-A2E1-2890-3DD4275FBEAC}" name="Maximilian_bits">

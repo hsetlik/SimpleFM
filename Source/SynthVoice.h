@@ -20,6 +20,12 @@ public:
     {
         return dynamic_cast<SynthSound*>(sound) != nullptr;
     }
+    //=========================================
+    void caVoiceSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.cAttackValues[index] = value;
+        voiceMaxiObjs.cMaxiEnvelopes[index].setAttack(*voiceParamValues.cAttackValues[index]);
+    }
     //========================================
     void startNote (int midiNoteNumber,
                     float velocity,

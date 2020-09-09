@@ -14,7 +14,7 @@
 //each SynthVoice owns an instance of each of these structs
 struct ParameterValSet
 {
-    float cAttackValues[6];
+    std::atomic<float>* cAttackValues[6];
     float cDecayValues[6];
     float cSustainValues[6];
     float cReleaseValues[6];
