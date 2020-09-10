@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
 #include "OperatorGuiComponent.h"
+#include "MixerComponent.h"
 
 
 //==============================================================================
@@ -39,6 +40,8 @@ private:
     OperatorGuiComponent op3;
     OperatorGuiComponent op4;
     OperatorGuiComponent op5;
+    MixerComponent mixer;
+    MixerComponent* pMixer;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)

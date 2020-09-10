@@ -12,6 +12,7 @@
 #include <JuceHeader.h>
 #include "OperatorAudioElement.h"
 #include "SynthSound.h"
+#include "MixerAudioElement.h"
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -140,6 +141,7 @@ public:
     //===============================================
     ParameterValSet voiceParamValues;
     MaxiObjectSet voiceMaxiObjs;
+    MixCalculator mixCalc();
 private:
     double fundamental;
     maxiOsc carrierOsc;

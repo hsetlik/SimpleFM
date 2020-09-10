@@ -11,7 +11,7 @@
 //==============================================================================
 SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), op0(0, this), op1(1, this), op2(2, this),
-                                                        op3(3, this), op4(4, this), op5(5, this)
+                                                        op3(3, this), op4(4, this), op5(5, this), mixer(this)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -25,7 +25,14 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     OpComps.push_back(&op4);
     OpComps.push_back(&op5);
     
-    
+    pMixer = &mixer;
+    pMixer->setAlwaysOnTop(true);
+    addAndMakeVisible(pMixer);
+    if(mixer.isShowing())
+        printf("mixer is showing when made visible\n");
+    if(mixer.isVisible())
+        printf("mixer is visible when made visible\n");
+    printf("mixer width: %d\n", mixer.getWidth());
     addAndMakeVisible(&op0);
     addAndMakeVisible(&op1);
     addAndMakeVisible(&op2);
@@ -34,26 +41,34 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     addAndMakeVisible(&op5);
     
     setSize (900 * 0.85, 700 * 0.85);
+    
     int third = getWidth() / 3;
     int half = 3 * (getHeight() / 7);
+    int seventh = getWidth() / 7;
+    mixer.setBounds(0, seventh * 6, getWidth(), seventh);
+    mixer.setOpaque(true);
+    printf("mixer coords at setBounds: %d, %d, %d, %d\n", mixer.getX(), mixer.getY(), mixer.getWidth(), mixer.getHeight());
+    printf("mixer screen coords at setBounds: %d, %d, %d, %d\n", mixer.getScreenX(), mixer.getScreenY(), mixer.getWidth(), mixer.getHeight());
+    
     op0.setBounds(0, 0, third, half);
     op1.setBounds(third, 0, third, half);
     op2.setBounds(2 * third, 0, third, half);
     op3.setBounds(0, half, third, half);
     op4.setBounds(third, half, third, half);
     op5.setBounds(2 * third, half, third, half);
+    if(mixer.isShowing())
+        printf("mixer is showing at editor construction\n");
+    //if(mixer.isVisible())
+        //printf("mixer is visible at editor construction\n");
+    //printf("mixer coords after Operator setBounds: %d, %d, %d, %d\n", mixer.getX(), mixer.getY(), mixer.getWidth(), mixer.getHeight());
+    //printf("mixer screen coords after Operator setBounds: %d, %d, %d, %d\n", mixer.getScreenX(), mixer.getScreenY(), mixer.getWidth(), mixer.getHeight());
     
     
     
     for(int i = 0; i < OpComps.size(); ++i)
     {
         juce::String iStr = juce::String(i);
-        //printf("operator #%d made visible\n", i);
-        printf("operator %d at X %d\n", i, OpComps[i]->getX());
-        printf("operator %d at screen X %d\n", i, OpComps[i]->getScreenX());
-        printf("operator %d width: %d\n", i, OpComps[i]->getWidth());
-        if(OpComps[i]->isVisible())
-            printf("Operator %d is visible\n", i);
+            
         OpComps[i]->caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
                                                                                            ("cAttackParam" + iStr),
                                                                                            OpComps[i]->cAttackSlider));
@@ -86,8 +101,11 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
         OpComps[i]->fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
         ("factorParam" + iStr),
         OpComps[i]->factorSlider));
+        //=============================
+        mixer.channelAttachments[i].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
+                                                                                                   "channelVolParam" + iStr,
+                                                                                                   *mixer.channelKnobs[i]));
         
-        //OpComps[i]->ReinitOperator(this);
     }
 }
 
@@ -99,24 +117,13 @@ SimpleFmAudioProcessorEditor::~SimpleFmAudioProcessorEditor()
 void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
 {
     // (Our component is opaque, so we must completely fill the background with a solid colour)
+    g.setColour(juce::Colours::darkslategrey);
+    g.fillAll();
     
-    g.setColour(juce::Colours::yellow);
-    g.fillRect(OpComps[0]->getBounds());
-    g.setColour(juce::Colours::lavender);
-    g.fillRect(OpComps[1]->getBounds());
+     
     g.setColour(juce::Colours::yellowgreen);
-    g.fillRect(OpComps[2]->getBounds());
-    g.setColour(juce::Colours::royalblue);
-    g.fillRect(OpComps[3]->getBounds());
-    g.setColour(juce::Colours::whitesmoke);
-    g.fillRect(OpComps[4]->getBounds());
-    g.setColour(juce::Colours::lightgrey);
-    g.fillRect(OpComps[5]->getBounds());
-    
-    for(int i = 0; i < OpComps.size(); ++i)
-    {
-        OpComps[i]->paint(g);
-    }
+    //g.fillRect(mixer.getBounds());
+    //mixer.paintEntireComponent(g, true);
 }
 
 void SimpleFmAudioProcessorEditor::resized()
@@ -125,13 +132,13 @@ void SimpleFmAudioProcessorEditor::resized()
     {
         OpComps[i]->resized();
     }
+    mixer.resized();
 }
 
 void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
     for(int i = 0; i < OpComps.size(); ++i)
     {
-        if(slider == &OpComps[i]->cAttackSlider)
-            printf("cAttack #%d changed\n", i);
+        
     }
 }

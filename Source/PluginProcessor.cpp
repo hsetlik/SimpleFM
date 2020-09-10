@@ -9,40 +9,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
-juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout()
-{
-    juce::AudioProcessorValueTreeState::ParameterLayout layout;
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cAttackParam", "Attack", 0.1f, 4000.0f, 1.0f));
-            // identifier, name, minimum Value, maximumValue, default value
-    //use more layout.add calls to add more parameters
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cDecayParam", "Decay", 0.1f, 4000.0f, 55.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cSustainParam", "Sustain", 0.0f, 1.0f, 0.6f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("cReleaseParam", "Release", 0.1f, 4000.0f, 250.0f));
-    //now for the modulator envelope
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mAttackParam", "Attack", 0.1f, 4000.0f, 1.0f));
-            // identifier, name, minimum Value, maximumValue, default value
-    //use more layout.add calls to add more parameters
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mDecayParam", "Decay", 0.1f, 4000.0f, 55.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mSustainParam", "Sustain", 0.0f, 1.0f, 0.6f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("mReleaseParam", "Release", 0.1f, 4000.0f, 250.0f));
-    
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("indexParam", "Mod Index", 0.0f, 250.0f, 100.0f));
-    layout.add(std::make_unique<juce::AudioParameterFloat>
-               ("factorParam", "Mod Factor", -10.0f, 10.0f, 1.0f));
-    
-    
-    return layout;
-}
-
 juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperators)
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
@@ -73,6 +39,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         juce::String iKnobName = "Operator " + iStr + " Index";
         juce::String fKnobID = "factorParam" + iStr;
         juce::String fKnobName = "Operator " + iStr + " Factor";
+        //for the mixer
+        juce::String cKnobID = "channelVolParam" + iStr;
+        juce::String cKnobName = "Operator " + iStr + " level";
         //creating the parameters...
         layout.add(std::make_unique<juce::AudioParameterFloat>
            (cAttackID, cAttackName, 0.1f, 4000.0f, 8.0f));
@@ -96,6 +65,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
                    (iKnobID, iKnobName, 0.0f, 250.0f, 100.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>
                    (fKnobID, fKnobName, -10.0f, 10.0f, 1.0f));
+        layout.add(std::make_unique<juce::AudioParameterFloat>
+                   (cKnobID, cKnobName, 0.0f, 1.0f, 0.6f));
     }
     return layout;
 }
