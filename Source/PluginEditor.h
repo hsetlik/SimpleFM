@@ -20,17 +20,20 @@
 class SimpleFmAudioProcessorEditor  :
 public juce::AudioProcessorEditor,
 public juce::Slider::Listener,
-public juce::ComboBox::Listener
+public juce::ComboBox::Listener,
+public juce::Button::Listener
 {
 public:
     SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor&);
     ~SimpleFmAudioProcessorEditor() override;
 
     //==============================================================================
+    void buttonClicked(juce::Button* button) override;
     void paint (juce::Graphics&) override;
     void resized() override;
     void sliderValueChanged(juce::Slider* slider) override;
     void comboBoxChanged(juce::ComboBox* box) override;
+    
 private:
     
     // This reference is provided as a quick way for your editor to

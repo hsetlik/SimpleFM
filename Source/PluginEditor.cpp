@@ -10,9 +10,13 @@
 
 //==============================================================================
 SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor& p)
-    : AudioProcessorEditor (&p), audioProcessor (p), op0(0, this, this), op1(1, this, this), op2(2, this, this),
-                                                        op3(3, this, this), op4(4, this, this), op5(5, this, this),
-                                                        mixComp(this)
+    : AudioProcessorEditor (&p), audioProcessor (p), op0(0, this, this, this),
+                                                     op1(1, this, this, this),
+                                                     op2(2, this, this, this),
+                                                     op3(3, this, this, this),
+                                                     op4(4, this, this, this),
+                                                     op5(5, this, this, this),
+                                                     mixComp(this)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -28,6 +32,12 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     addAndMakeVisible(&op5);
     addAndMakeVisible(&mixComp);
     
+    OpComps.push_back(&op0);
+    OpComps.push_back(&op1);
+    OpComps.push_back(&op2);
+    OpComps.push_back(&op3);
+    OpComps.push_back(&op4);
+    OpComps.push_back(&op5);
     
     
     int third = getWidth() / 3;
@@ -104,11 +114,14 @@ void SimpleFmAudioProcessorEditor::paint (juce::Graphics& g)
     // (Our component is opaque, so we must completely fill the background with a solid colour)
     g.setColour(juce::Colours::darkslategrey);
     g.fillAll();
-    
-     
-    g.setColour(juce::Colours::yellowgreen);
-    //g.fillRect(mixer.getBounds());
-    //mixer.paintEntireComponent(g, true);
+    if(OpComps.size() != 0)
+    {
+        for(int i = 0; i < 6; ++i)
+        {
+            bool isActive = OpComps[i]->sendToMixer.getToggleState();
+            mixComp.setColorsFromChannel(i, isActive);
+        }
+    }
 }
 
 void SimpleFmAudioProcessorEditor::resized()
@@ -130,4 +143,25 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 void SimpleFmAudioProcessorEditor::comboBoxChanged(juce::ComboBox *box)
 {
     printf("combo box changed\n");
+}
+
+void SimpleFmAudioProcessorEditor::buttonClicked(juce::Button* button)
+{
+    std::string str = button->getName().toStdString();
+    const char* buttonName = str.c_str();
+    printf("Button name: %s\n", buttonName);
+    int bIndex = 50;
+    bool active = button->getToggleState();
+    //cout >> str >> endl;
+    for(int i = 0; i < 6; ++i)
+    {
+        if(button == &OpComps[i]->sendToMixer)
+        {
+            if(active)
+                printf("button # %d is active\n", i);
+            else
+                printf("button # %d is inactive\n", i);
+            mixComp.setColorsFromChannel(bIndex, active);
+        }
+    }
 }

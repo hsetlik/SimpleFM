@@ -20,4 +20,8 @@ public:
     void resized() override;
     juce::Slider levelKnobs[6];
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mixKnobAttachments[6];
+    juce::Label knobLabels[6];
+    void setColorsFromChannel(int channelNum, bool isActive);
+    juce::Colour thumbColour;
+    juce::Colour textColour;
 };

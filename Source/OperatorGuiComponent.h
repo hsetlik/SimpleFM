@@ -29,9 +29,10 @@ public:
 class OperatorGuiComponent : public juce::Component
 {
 public:
-    OperatorGuiComponent(int index, juce::Slider::Listener* thisListener, juce::ComboBox::Listener* boxListener);
+    OperatorGuiComponent(int index, juce::Slider::Listener* thisListener, juce::ComboBox::Listener* boxListener, juce::Button::Listener* buttonLstnr);
     ~OperatorGuiComponent() {}
     void resized() override;
+    void paint(juce::Graphics& g) override;
     int ComponentIndex;
     juce::Slider cAttackSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> caAttach;

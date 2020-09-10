@@ -10,7 +10,7 @@
 
 #include "OperatorGuiComponent.h"
 
-OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* thisListener, juce::ComboBox::Listener* boxListener)
+OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* thisListener, juce::ComboBox::Listener* boxListener, juce::Button::Listener* buttonLstnr)
 {
     ComponentIndex = index;
     cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
@@ -99,7 +99,17 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
     modSelector.addItem("-", 7);
     modSelector.setSelectedId(7);
     
+    juce::String iStr = juce::String(ComponentIndex);
+    
+    sendToMixer.setName("mixer Button " + iStr);
+    sendToMixer.addListener(buttonLstnr);
     addAndMakeVisible(&sendToMixer);
+}
+
+void OperatorGuiComponent::paint(juce::Graphics &g)
+{
+    g.setColour(juce::Colours::darkslategrey);
+    g.fillAll();
 }
 
 void OperatorGuiComponent::resized()
