@@ -11,7 +11,20 @@
 #pragma once
 #include <JuceHeader.h>
 
-
+class MixerButton : public juce::TextButton
+{
+public:
+    MixerButton()
+    {
+        setClickingTogglesState(true);
+        setButtonText("Output");
+        changeWidthToFitText();
+        setColour(buttonColourId, juce::Colours::lightgrey);
+        setColour(buttonOnColourId, juce::Colours::lightgreen);
+    }
+    ~MixerButton() {}
+    bool isActive;
+};
 
 class OperatorGuiComponent : public juce::Component
 {
@@ -46,6 +59,6 @@ public:
     juce::ComboBox modSelector;
     void modSelectorChanged();
     
-    juce::TextButton sendToMixer;
+    MixerButton sendToMixer;
 };
 
