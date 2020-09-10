@@ -40,7 +40,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         juce::String fKnobID = "factorParam" + iStr;
         juce::String fKnobName = "Operator " + iStr + " Factor";
         //for the mixer
-        juce::String cKnobID = "channelVolParam" + iStr;
+        juce::String cKnobID = "mixParam" + iStr;
         juce::String cKnobName = "Operator " + iStr + " level";
         //creating the parameters...
         layout.add(std::make_unique<juce::AudioParameterFloat>

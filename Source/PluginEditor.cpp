@@ -11,7 +11,8 @@
 //==============================================================================
 SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor& p)
     : AudioProcessorEditor (&p), audioProcessor (p), op0(0, this, this), op1(1, this, this), op2(2, this, this),
-                                                        op3(3, this, this), op4(4, this, this), op5(5, this, this)
+                                                        op3(3, this, this), op4(4, this, this), op5(5, this, this),
+                                                        mixComp(this)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -25,13 +26,13 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     addAndMakeVisible(&op3);
     addAndMakeVisible(&op4);
     addAndMakeVisible(&op5);
+    addAndMakeVisible(&mixComp);
     
     
     
     int third = getWidth() / 3;
     int half = 3 * (getHeight() / 7);
-    
-    
+    int seventh = getHeight() / 7;
     
     op0.setBounds(0, 0, third, half);
     op1.setBounds(third, 0, third, half);
@@ -39,7 +40,7 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     op3.setBounds(0, half, third, half);
     op4.setBounds(third, half, third, half);
     op5.setBounds(2 * third, half, third, half);
-    
+    mixComp.setBounds(0, 6 * seventh, getWidth(), seventh);
     //if(mixer.isVisible())
         //printf("mixer is visible at editor construction\n");
     //printf("mixer coords after Operator setBounds: %d, %d, %d, %d\n", mixer.getX(), mixer.getY(), mixer.getWidth(), mixer.getHeight());
@@ -50,6 +51,11 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
     for(int i = 0; i < OpComps.size(); ++i)
     {
         juce::String iStr = juce::String(i);
+        
+        mixComp.mixKnobAttachments[i].reset(new juce::AudioProcessorValueTreeState::SliderAttachment(
+        audioProcessor.tree,
+        ("mixParam" + iStr),
+        mixComp.levelKnobs[i]));
             
         OpComps[i]->caAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
                                                                                            ("cAttackParam" + iStr),

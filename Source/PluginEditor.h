@@ -43,7 +43,7 @@ private:
     OperatorGuiComponent op3;
     OperatorGuiComponent op4;
     OperatorGuiComponent op5;
-    
+    MixerComponent mixComp;
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)

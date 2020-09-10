@@ -11,3 +11,13 @@
 #pragma once
 #include <JuceHeader.h>
 
+
+class MixerComponent : public juce::Component
+{
+public:
+    MixerComponent(juce::Slider::Listener* lstnr);
+    ~MixerComponent() {}
+    void resized() override;
+    juce::Slider levelKnobs[6];
+    std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> mixKnobAttachments[6];
+};

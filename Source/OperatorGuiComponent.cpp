@@ -97,6 +97,7 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
             modSelector.addItem(idStr, i);
     }
     modSelector.addItem("-", 7);
+    modSelector.setSelectedId(7);
 }
 
 void OperatorGuiComponent::resized()
