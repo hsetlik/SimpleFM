@@ -90,15 +90,13 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
     factorSlider.setNumDecimalPlacesToDisplay(1);
     
     addAndMakeVisible(&modSelector);
-    modSelector.addItem("1", 1);
-    modSelector.addItem("2", 2);
-    modSelector.addItem("3", 3);
-    modSelector.addItem("4", 4);
-    modSelector.addItem("5", 5);
-    modSelector.addItem("6", 6);
+    for(int i = 1; i < 7; ++i)
+    {
+        juce::String idStr = juce::String(i);
+        if(i != (ComponentIndex + 1))
+            modSelector.addItem(idStr, i);
+    }
     modSelector.addItem("-", 7);
-
-    modSelector.setSelectedId(7);
 }
 
 void OperatorGuiComponent::resized()
