@@ -11,10 +11,12 @@
 #pragma once
 #include <JuceHeader.h>
 
+
+
 class OperatorGuiComponent : public juce::Component
 {
 public:
-    OperatorGuiComponent(int index, juce::Slider::Listener* thisListener);
+    OperatorGuiComponent(int index, juce::Slider::Listener* thisListener, juce::ComboBox::Listener* boxListener);
     ~OperatorGuiComponent() {}
     void resized() override;
     int ComponentIndex;
@@ -40,5 +42,9 @@ public:
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> iAttach;
     juce::Slider factorSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
+    
+    juce::ComboBox modSelector;
+    void modSelectorChanged();
+    
 };
 

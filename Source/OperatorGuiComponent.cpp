@@ -10,7 +10,7 @@
 
 #include "OperatorGuiComponent.h"
 
-OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* thisListener)
+OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* thisListener, juce::ComboBox::Listener* boxListener)
 {
     ComponentIndex = index;
     cAttackSlider.setSliderStyle(juce::Slider::LinearVertical);
@@ -48,7 +48,6 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
     mAttackSlider.setValue(0.4);
     mAttackSlider.addListener(thisListener);
     addAndMakeVisible(&mAttackSlider);
-    
     
     mDecaySlider.setSliderStyle(juce::Slider::LinearVertical);
     mDecaySlider.setRange(0.1, 4000.0);
@@ -89,21 +88,34 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
     factorSlider.addListener(thisListener);
     addAndMakeVisible(&factorSlider);
     factorSlider.setNumDecimalPlacesToDisplay(1);
+    
+    addAndMakeVisible(&modSelector);
+    modSelector.addItem("1", 1);
+    modSelector.addItem("2", 2);
+    modSelector.addItem("3", 3);
+    modSelector.addItem("4", 4);
+    modSelector.addItem("5", 5);
+    modSelector.addItem("6", 6);
+    modSelector.addItem("-", 7);
+
+    modSelector.setSelectedId(7);
 }
 
 void OperatorGuiComponent::resized()
 {
     float n = getWidth() / 15.0f;
-    cAttackSlider.setBounds(1.5 * n, n, 2 * n, 4 * n);
-    cDecaySlider.setBounds(4.5 * n, n, 2 * n, 4 * n);
-    cSustainSlider.setBounds(7.5 * n, n, 2 * n, 4 * n);
-    cReleaseSlider.setBounds(10.5 * n, n, 2 * n, 4 * n);
+    cAttackSlider.setBounds(1.5 * n, 2 * n, 2 * n, 4 * n);
+    cDecaySlider.setBounds(4.5 * n, 2 * n, 2 * n, 4 * n);
+    cSustainSlider.setBounds(7.5 * n, 2 * n, 2 * n, 4 * n);
+    cReleaseSlider.setBounds(10.5 * n, 2 * n, 2 * n, 4 * n);
+    
+    modSelector.setBounds(1.5 * n, 0.5 * n, 3 * n, 20);
     
     mAttackSlider.setBounds(1.5 * n, 6 * n, 2 * n, 4 * n);
     mDecaySlider.setBounds(4.5 * n, 6 * n, 2 * n, 4 * n);
     mSustainSlider.setBounds(7.5 * n, 6 * n, 2 * n, 4 * n);
     mReleaseSlider.setBounds(10.5 * n, 6 * n, 2 * n, 4 * n);
     
-    factorSlider.setBounds(3 * n, 11.5 * n, 3 * n, 3 * n);
-    indexSlider.setBounds(8 * n, 11.5 * n, 3 * n, 3 * n);
+    factorSlider.setBounds(3 * n, 11 * n, 4 * n, 4 * n);
+    indexSlider.setBounds(8 * n, 11 * n, 4 * n, 4 * n);
 }

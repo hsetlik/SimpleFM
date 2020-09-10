@@ -17,7 +17,10 @@
 //==============================================================================
 /**
 */
-class SimpleFmAudioProcessorEditor  : public juce::AudioProcessorEditor, public juce::Slider::Listener
+class SimpleFmAudioProcessorEditor  :
+public juce::AudioProcessorEditor,
+public juce::Slider::Listener,
+public juce::ComboBox::Listener
 {
 public:
     SimpleFmAudioProcessorEditor (SimpleFmAudioProcessor&);
@@ -27,7 +30,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
     void sliderValueChanged(juce::Slider* slider) override;
-
+    void comboBoxChanged(juce::ComboBox* box) override;
 private:
     
     // This reference is provided as a quick way for your editor to
@@ -40,8 +43,7 @@ private:
     OperatorGuiComponent op3;
     OperatorGuiComponent op4;
     OperatorGuiComponent op5;
-    MixerComponent mixer;
-    MixerComponent* pMixer;
+    
     
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (SimpleFmAudioProcessorEditor)
