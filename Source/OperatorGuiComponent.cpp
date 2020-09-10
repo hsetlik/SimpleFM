@@ -98,6 +98,10 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
     }
     modSelector.addItem("-", 7);
     modSelector.setSelectedId(7);
+    
+    sendToMixer.setName("Output");
+    sendToMixer.setClickingTogglesState(true);
+    addAndMakeVisible(&sendToMixer);
 }
 
 void OperatorGuiComponent::resized()
@@ -110,11 +114,14 @@ void OperatorGuiComponent::resized()
     
     modSelector.setBounds(1.5 * n, 0.5 * n, 3 * n, 20);
     
+    
+    
     mAttackSlider.setBounds(1.5 * n, 6 * n, 2 * n, 4 * n);
     mDecaySlider.setBounds(4.5 * n, 6 * n, 2 * n, 4 * n);
     mSustainSlider.setBounds(7.5 * n, 6 * n, 2 * n, 4 * n);
     mReleaseSlider.setBounds(10.5 * n, 6 * n, 2 * n, 4 * n);
     
-    factorSlider.setBounds(3 * n, 11 * n, 4 * n, 4 * n);
-    indexSlider.setBounds(8 * n, 11 * n, 4 * n, 4 * n);
+    factorSlider.setBounds(2 * n, 11 * n, 4 * n, 4 * n);
+    sendToMixer.setBounds(5.5 * n, 12 * n, 3 * n, 20);
+    indexSlider.setBounds(10 * n, 11 * n, 4 * n, 4 * n);
 }

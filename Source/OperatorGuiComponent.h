@@ -46,5 +46,6 @@ public:
     juce::ComboBox modSelector;
     void modSelectorChanged();
     
+    juce::TextButton sendToMixer;
 };
 
