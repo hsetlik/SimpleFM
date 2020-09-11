@@ -20,6 +20,15 @@ void DspProcessor::triggerEnvelopes()
     }
 }
 
+void DspProcessor::stopEnvelopes()
+{
+   for(int i = 0; i < 6; ++i)
+    {
+        mObjs->cMaxiEnvelopes[i].setTrigger(0);
+        mObjs->mMaxiEnvelopes[i].setTrigger(0);
+    }
+}
+
 void DspProcessor::setModLayers()
 {
     for(int i = 0; i < 6; ++i)

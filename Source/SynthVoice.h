@@ -99,12 +99,7 @@ public:
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
     {
-        carrierEnv.trigger = 0;
-        modulatorEnv.trigger = 0;
-        for(int i = 0; i < 6; ++i)
-        {
-            
-        }
+        proc.stopEnvelopes();
         allowTailOff = true;
         if(velocity == 0)
             clearCurrentNote();
