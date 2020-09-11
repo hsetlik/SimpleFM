@@ -42,6 +42,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         //for the mixer
         juce::String cKnobID = "mixParam" + iStr;
         juce::String cKnobName = "Operator " + iStr + " level";
+        juce::String mButtonID = "mixOnParam" + iStr;
+        juce::String mButtonName = "Operator " + iStr + " to mixer";
         //creating the parameters...
         layout.add(std::make_unique<juce::AudioParameterFloat>
            (cAttackID, cAttackName, 0.1f, 4000.0f, 8.0f));
@@ -67,6 +69,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
                    (fKnobID, fKnobName, -10.0f, 10.0f, 1.0f));
         layout.add(std::make_unique<juce::AudioParameterFloat>
                    (cKnobID, cKnobName, 0.0f, 1.0f, 0.6f));
+        layout.add(std::make_unique<juce::AudioParameterInt>("selectorParam" + iStr,
+                                                             "Operator " + iStr + " Mod Source",
+                                                             0, 7, 7));
+        layout.add(std::make_unique<juce::AudioParameterBool>(mButtonID, mButtonName, false));
     }
     return layout;
 }
@@ -222,6 +228,10 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
                 
                 thisVoice->iVoiceSet(n, tree.getRawParameterValue("indexParam" + iStr));
                 thisVoice->fVoiceSet(n, tree.getRawParameterValue("factorParam" + iStr));
+                
+                thisVoice->selectorSet(n, tree.getParameter("selectorParam" + iStr));
+                thisVoice->mixerSet(n, tree.getRawParameterValue("mixParam" + iStr));
+                thisVoice->mixerOnSet(n, tree.getParameter("mixOnParam" + iStr));
             }
             
         }

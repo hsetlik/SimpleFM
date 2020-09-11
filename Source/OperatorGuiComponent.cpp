@@ -98,6 +98,7 @@ OperatorGuiComponent::OperatorGuiComponent(int index, juce::Slider::Listener* th
     }
     modSelector.addItem("-", 7);
     modSelector.setSelectedId(7);
+    modSelector.addListener(boxListener);
     
     juce::String iStr = juce::String(ComponentIndex);
     

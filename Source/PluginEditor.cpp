@@ -99,6 +99,12 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
         OpComps[i]->fAttach.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(audioProcessor.tree,
         ("factorParam" + iStr),
         OpComps[i]->factorSlider));
+        
+        OpComps[i]->mixButtonAttach.reset(new juce::AudioProcessorValueTreeState::ButtonAttachment(
+        audioProcessor.tree,
+        ("mixParam" + iStr),
+        OpComps[i]->sendToMixer));
+        
         //=============================
         
     }

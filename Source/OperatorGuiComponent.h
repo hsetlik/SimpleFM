@@ -57,9 +57,10 @@ public:
     juce::Slider factorSlider;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> fAttach;
     
+    
     juce::ComboBox modSelector;
-    void modSelectorChanged();
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment>selectorAttach;
     
     MixerButton sendToMixer;
+    std::unique_ptr<juce::AudioProcessorValueTreeState::ButtonAttachment> mixButtonAttach;
 };
-

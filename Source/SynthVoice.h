@@ -65,12 +65,26 @@ public:
     void iVoiceSet(int index, std::atomic<float>* value)
     {
         voiceParamValues.modIndexValues[index] = value;
-        voiceMaxiObjs.maxiModIndeces[index] = *value;
+        
     }
     void fVoiceSet(int index, std::atomic<float>* value)
     {
         voiceParamValues.modFactorValues[index] = value;
-        voiceMaxiObjs.maxiModFactors[index] = *value;
+    }
+    void selectorSet(int index, juce::RangedAudioParameter* param)
+    {
+        int indexNum = param->getParameterIndex();
+        voiceParamValues.externalSampleSource[index] = indexNum;
+    }
+    void mixerOnSet(int index, juce::RangedAudioParameter* param)
+    {
+        voiceParamValues.sendToMix[index] = param->get();
+    }
+    
+    
+    void mixerSet(int index, std::atomic<float>* value)
+    {
+        voiceParamValues.mixLevel[index] = *value;
     }
     //========================================
     void startNote (int midiNoteNumber,
@@ -79,18 +93,18 @@ public:
                     int currentPitchWheelPosition)
     {
         fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-        carrierEnv.trigger = 1;
-        modulatorEnv.trigger = 1;
-        modulatorPitch = fundamental * modFactor;
-        printf("fundamental pitch: %f\n", fundamental);
-        printf("mod pitch: %f\n", modulatorPitch);
-       
+        proc.triggerEnvelopes();
+        proc.setModLayers();
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
     {
         carrierEnv.trigger = 0;
         modulatorEnv.trigger = 0;
+        for(int i = 0; i < 6; ++i)
+        {
+            
+        }
         allowTailOff = true;
         if(velocity == 0)
             clearCurrentNote();
@@ -120,15 +134,13 @@ public:
     {
         for(int sample = 0; sample < numSamples; ++sample) //calculate all the samples for this block
         {
-            float modSample = modulatorOsc.sinewave(modulatorPitch);
-            float modEnvSample = modulatorEnv.adsr(modSample, modulatorEnv.trigger);
-            float carSample = carrierOsc.sinewave(fundamental +
-                                                  (modEnvSample * modIndex));
-            float carEnvSample = carrierEnv.adsr(carSample, carrierEnv.trigger);
-            //calculate a sample for each channel
+            proc.calculateModFrequencies();
+            proc.calculateCarFrequencies();
+            proc.setCarSamplesToMix();
+            float mixSample = proc.mixerOutputSample();
             for(int channel = 0; channel < outputBuffer.getNumChannels(); ++channel)
             {
-                outputBuffer.addSample(channel, startSample, carEnvSample);
+                outputBuffer.addSample(channel, startSample, mixSample);
             }
             ++startSample;
         }
@@ -141,7 +153,7 @@ public:
     //===============================================
     ParameterValSet voiceParamValues;
     MaxiObjectSet voiceMaxiObjs;
-    MixCalculator mixCalc();
+    DspProcessor proc = DspProcessor(&voiceParamValues, &voiceMaxiObjs);
 private:
     double fundamental;
     maxiOsc carrierOsc;
