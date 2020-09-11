@@ -48,6 +48,10 @@ void DspProcessor::setModLayers()
             
     }
 }
+void DspProcessor::setModSources()
+{
+    
+}
 
 void DspProcessor::calculateModFrequencies()
 {

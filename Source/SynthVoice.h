@@ -71,9 +71,9 @@ public:
     {
         voiceParamValues.modFactorValues[index] = value;
     }
-    void selectorSet(int index, juce::RangedAudioParameter* param)
+    void selectorSet(int index, std::atomic<float>* value)
     {
-        int indexNum = param->getParameterIndex();
+        int indexNum = (int) *value;
         voiceParamValues.externalSampleSource[index] = indexNum;
     }
     void mixerOnSet(int index, bool state)

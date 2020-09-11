@@ -52,7 +52,7 @@ struct MaxiObjectSet
     
 };
 
-class DspProcessor //this only handles things for the operators separately, the mixing is done my the mixer element
+class DspProcessor 
 {
 public:
     DspProcessor(ParameterValSet* pSet, MaxiObjectSet* mSet, double* fund)
@@ -66,6 +66,7 @@ public:
     void stopEnvelopes();
     void calculateModFrequencies(); //call this at the beginning of every block
     void setModLayers();//call this in the noteOn method, no need to do it every sample
+    void setModSources();
     void calculateCarFrequencies();
     void setCarSamplesToMix();
     float mixerOutputSample();

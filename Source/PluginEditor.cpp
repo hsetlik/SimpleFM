@@ -105,6 +105,10 @@ SimpleFmAudioProcessorEditor::SimpleFmAudioProcessorEditor (SimpleFmAudioProcess
         ("mixParam" + iStr),
         OpComps[i]->sendToMixer));
         
+        OpComps[i]->selectorAttach.reset(new juce::AudioProcessorValueTreeState::ComboBoxAttachment(
+                                                                                    audioProcessor.tree,
+                                                                                    ("selectorParam" + iStr), OpComps[i]->modSelector));
+        
         //=============================
         
     }

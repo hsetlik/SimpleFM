@@ -39,6 +39,9 @@ juce::AudioProcessorValueTreeState::ParameterLayout createLayout(int numOperator
         juce::String iKnobName = "Operator " + iStr + " Index";
         juce::String fKnobID = "factorParam" + iStr;
         juce::String fKnobName = "Operator " + iStr + " Factor";
+        //for the combo box
+        juce::String selectorID = "modSelectParam" + iStr;
+        juce::String selectorName = "Operator " + iStr + " modualtion source";
         //for the mixer
         juce::String cKnobID = "mixParam" + iStr;
         juce::String cKnobName = "Operator " + iStr + " level";
@@ -229,7 +232,7 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
                 thisVoice->iVoiceSet(n, tree.getRawParameterValue("indexParam" + iStr));
                 thisVoice->fVoiceSet(n, tree.getRawParameterValue("factorParam" + iStr));
                 
-                thisVoice->selectorSet(n, tree.getParameter("selectorParam" + iStr));
+                thisVoice->selectorSet(n, tree.getRawParameterValue("selectorParam" + iStr));
                 thisVoice->mixerSet(n, tree.getRawParameterValue("mixParam" + iStr));
         }
             thisVoice->parameterAssignmentFinished = true;
