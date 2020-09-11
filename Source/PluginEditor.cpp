@@ -168,6 +168,8 @@ void SimpleFmAudioProcessorEditor::buttonClicked(juce::Button* button)
             else
                 printf("button # %d is inactive\n", i);
             mixComp.setColorsFromChannel(bIndex, active);
+            audioProcessor.thisVoice->mixerOnSet(i, button->getToggleState());
         }
     }
+    audioProcessor.thisVoice->buttonAssignmentFinished = true;
 }

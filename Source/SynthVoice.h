@@ -76,9 +76,9 @@ public:
         int indexNum = param->getParameterIndex();
         voiceParamValues.externalSampleSource[index] = indexNum;
     }
-    void mixerOnSet(int index, juce::RangedAudioParameter* param)
+    void mixerOnSet(int index, bool state)
     {
-        voiceParamValues.sendToMix[index] = param->get();
+        voiceParamValues.sendToMix[index] = state;
     }
     
     
@@ -132,6 +132,8 @@ public:
     //===============================================
     void renderNextBlock (juce::AudioBuffer< float > &outputBuffer, int startSample, int numSamples)
     {
+        if(parameterAssignmentFinished && buttonAssignmentFinished)
+        {
         for(int sample = 0; sample < numSamples; ++sample) //calculate all the samples for this block
         {
             proc.calculateModFrequencies();
@@ -144,6 +146,7 @@ public:
             }
             ++startSample;
         }
+        }
     }
     //==============================================
     void setCurrentPlaybackSampleRate (double newRate)
@@ -153,9 +156,12 @@ public:
     //===============================================
     ParameterValSet voiceParamValues;
     MaxiObjectSet voiceMaxiObjs;
-    DspProcessor proc = DspProcessor(&voiceParamValues, &voiceMaxiObjs);
-private:
+    DspProcessor proc = DspProcessor(&voiceParamValues, &voiceMaxiObjs, &fundamental);
+    bool parameterAssignmentFinished = false;
+    bool buttonAssignmentFinished = false;
     double fundamental;
+private:
+    
     maxiOsc carrierOsc;
     maxiOsc modulatorOsc;
     maxiEnv carrierEnv;

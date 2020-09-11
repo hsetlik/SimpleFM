@@ -55,10 +55,11 @@ struct MaxiObjectSet
 class DspProcessor //this only handles things for the operators separately, the mixing is done my the mixer element
 {
 public:
-    DspProcessor(ParameterValSet* pSet, MaxiObjectSet* mSet)
+    DspProcessor(ParameterValSet* pSet, MaxiObjectSet* mSet, double* fund)
     {
         pVals = pSet;
         mObjs = mSet;
+        fundamental = fund;
     }
     ~DspProcessor() {}
     void triggerEnvelopes();
@@ -72,5 +73,5 @@ public:
     //all the assignment has to be done by pointer
     ParameterValSet* pVals;
     MaxiObjectSet* mObjs;
-    double fundamental;
+    double* fundamental;
 };

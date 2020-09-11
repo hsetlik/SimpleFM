@@ -46,41 +46,41 @@ void DspProcessor::calculateModFrequencies()
     {
         if(pVals->layerSettings[i] == base)
         {
-            auto baseFreq = fundamental * *pVals->modFactorValues[i];
+            auto baseFreq = *fundamental * *pVals->modFactorValues[i];
             auto preEnv = mObjs->mMaxiOsc[i].sinewave(baseFreq);
             auto postEnv = mObjs->mMaxiEnvelopes[i].adsr(preEnv);
             pVals->modOutputSample[i] = postEnv;
         } else if(pVals->layerSettings[i] == first)
         {
-            auto baseFreq = fundamental * *pVals->modFactorValues[i];
+            auto baseFreq = *fundamental * *pVals->modFactorValues[i];
             auto modFreq = baseFreq + (pVals->modOutputSample[pVals->externalSampleSource[i]] * pVals->dummyIndex);
             auto preEnv = mObjs->mMaxiOsc[i].sinewave(modFreq);
             auto postEnv = mObjs->mMaxiEnvelopes[i].adsr(preEnv);
             pVals->modOutputSample[i] = postEnv;
         } else if(pVals->layerSettings[i] == second)
         {
-            auto baseFreq = fundamental * *pVals->modFactorValues[i];
+            auto baseFreq = *fundamental * *pVals->modFactorValues[i];
             auto modFreq = baseFreq + pVals->modOutputSample[pVals->externalSampleSource[i]];
             auto preEnv = mObjs->mMaxiOsc[i].sinewave(modFreq);
             auto postEnv = mObjs->mMaxiEnvelopes[i].adsr(preEnv);
             pVals->modOutputSample[i] = postEnv;
         } else if(pVals->layerSettings[i] == third)
         {
-            auto baseFreq = fundamental * *pVals->modFactorValues[i];
+            auto baseFreq = *fundamental * *pVals->modFactorValues[i];
             auto modFreq = baseFreq + (pVals->modOutputSample[pVals->externalSampleSource[i]] * pVals->dummyIndex);
             auto preEnv = mObjs->mMaxiOsc[i].sinewave(modFreq);
             auto postEnv = mObjs->mMaxiEnvelopes[i].adsr(preEnv);
             pVals->modOutputSample[i] = postEnv;
         } else if(pVals->layerSettings[i] == fourth)
         {
-            auto baseFreq = fundamental * *pVals->modFactorValues[i];
+            auto baseFreq = *fundamental * *pVals->modFactorValues[i];
             auto modFreq = baseFreq + pVals->modOutputSample[pVals->externalSampleSource[i]];
             auto preEnv = mObjs->mMaxiOsc[i].sinewave(modFreq);
             auto postEnv = mObjs->mMaxiEnvelopes[i].adsr(preEnv);
             pVals->modOutputSample[i] = postEnv;
         } else if(pVals->layerSettings[i] == fifth)
         {
-            auto baseFreq = fundamental * *pVals->modFactorValues[i];
+            auto baseFreq = *fundamental * *pVals->modFactorValues[i];
             auto modFreq = baseFreq + pVals->modOutputSample[pVals->externalSampleSource[i]];
             auto preEnv = mObjs->mMaxiOsc[i].sinewave(modFreq);
             auto postEnv = mObjs->mMaxiEnvelopes[i].adsr(preEnv, mObjs->mMaxiEnvelopes[i].trigger);
@@ -93,7 +93,7 @@ void DspProcessor::calculateCarFrequencies()
 {
     for(int i = 0; i < 6; ++i)
     {
-        auto freq = fundamental + pVals->modOutputSample[i];
+        auto freq = *fundamental + pVals->modOutputSample[i];
         auto preEnv = mObjs->cMaxiOsc[i].sinewave(freq);
         auto postEnv = mObjs->cMaxiEnvelopes[i].adsr(preEnv, mObjs->cMaxiEnvelopes[i].trigger);
         pVals->carOutputSample[i] = postEnv;
