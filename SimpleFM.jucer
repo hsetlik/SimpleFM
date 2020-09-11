@@ -7,10 +7,6 @@
               cppLanguageStandard="11">
   <MAINGROUP id="Ax74qE" name="SimpleFM">
     <GROUP id="{BE32745E-5A34-0691-C8A8-D3437CBFECD0}" name="Source">
-      <FILE id="FdvIlj" name="CustomLooksAndFeels.cpp" compile="1" resource="0"
-            file="Source/CustomLooksAndFeels.cpp"/>
-      <FILE id="I911gQ" name="CustomLooksAndFeels.h" compile="0" resource="0"
-            file="Source/CustomLooksAndFeels.h"/>
       <GROUP id="{4F1A466B-7B37-A2E1-2890-3DD4275FBEAC}" name="Maximilian_bits">
         <GROUP id="{02D0C198-0ADD-98E1-6C76-4D880EC0D932}" name="src">
           <GROUP id="{30E56192-D7B6-C2ED-F5CA-46F7A6EB3C9F}" name="libs">
@@ -26,6 +22,10 @@
           <FILE id="eNnzh4" name="maximilian.h" compile="0" resource="0" file="../../Maximilian_bits/src/maximilian.h"/>
         </GROUP>
       </GROUP>
+      <FILE id="zzxOj3" name="OperatorNetwork.cpp" compile="1" resource="0"
+            file="Source/OperatorNetwork.cpp"/>
+      <FILE id="IKsuVK" name="OperatorNetwork.h" compile="0" resource="0"
+            file="Source/OperatorNetwork.h"/>
       <FILE id="P7O3wh" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="aY0alB" name="PluginProcessor.h" compile="0" resource="0"
@@ -43,10 +43,6 @@
             file="Source/OperatorAudioElement.cpp"/>
       <FILE id="mHE8Dr" name="OperatorAudioElement.h" compile="0" resource="0"
             file="Source/OperatorAudioElement.h"/>
-      <FILE id="KbSmp2" name="MixerAudioElement.cpp" compile="1" resource="0"
-            file="Source/MixerAudioElement.cpp"/>
-      <FILE id="WFgxIH" name="MixerAudioElement.h" compile="0" resource="0"
-            file="Source/MixerAudioElement.h"/>
       <FILE id="AD7PpT" name="MixerComponent.cpp" compile="1" resource="0"
             file="Source/MixerComponent.cpp"/>
       <FILE id="wlvPVP" name="MixerComponent.h" compile="0" resource="0"
