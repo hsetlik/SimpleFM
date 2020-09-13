@@ -146,20 +146,75 @@ void SimpleFmAudioProcessorEditor::sliderValueChanged(juce::Slider *slider)
 {
     for(int i = 0; i < OpComps.size(); ++i)
     {
-        
+        if(slider == &OpComps[i]->cAttackSlider)
+        {
+            float cAttack = OpComps[i]->cAttackSlider.getValue();
+            printf("cAttack #%d = %f\n", i, cAttack);
+        }
+        else if(slider == &OpComps[i]->cDecaySlider)
+        {
+            float value = OpComps[i]->cDecaySlider.getValue();
+            printf("cDecay #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->cSustainSlider)
+        {
+            float value = OpComps[i]->cSustainSlider.getValue();
+            printf("cSustain #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->cReleaseSlider)
+        {
+            float value = OpComps[i]->cReleaseSlider.getValue();
+            printf("cRelease #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->mAttackSlider)
+        {
+            float mAttack = OpComps[i]->mAttackSlider.getValue();
+            printf("mAttack #%d = %f\n", i, mAttack);
+        }
+        else if(slider == &OpComps[i]->mDecaySlider)
+        {
+            float value = OpComps[i]->mDecaySlider.getValue();
+            printf("mDecay #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->mSustainSlider)
+        {
+            float value = OpComps[i]->mSustainSlider.getValue();
+            printf("mSustain #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->mReleaseSlider)
+        {
+            float value = OpComps[i]->mReleaseSlider.getValue();
+            printf("mRelease #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->indexSlider)
+        {
+            float value = OpComps[i]->indexSlider.getValue();
+            printf("mod index #%d = %f\n", i, value);
+        }
+        else if(slider == &OpComps[i]->factorSlider)
+        {
+            float value = OpComps[i]->factorSlider.getValue();
+            printf("mod factor #%d = %f\n", i, value);
+        }
     }
 }
 
 void SimpleFmAudioProcessorEditor::comboBoxChanged(juce::ComboBox *box)
 {
-    printf("combo box changed\n");
+    for(int i = 0; i < 6; ++i)
+    {
+    if(box == &OpComps[i]->modSelector)
+    {
+        auto boxSetting = OpComps[i]->modSelector.getSelectedId();
+        printf("Mod source for operator #%d changed to %d\n", i, boxSetting);
+        audioProcessor.thisVoice->voiceParamValues.externalSampleSource[i] = boxSetting;
+        printf("eternal mod parameter: %d\n", audioProcessor.thisVoice->voiceParamValues.externalSampleSource[i]);
+    }
+    }
 }
 
 void SimpleFmAudioProcessorEditor::buttonClicked(juce::Button* button)
 {
-    std::string str = button->getName().toStdString();
-    const char* buttonName = str.c_str();
-    printf("Button name: %s\n", buttonName);
     int bIndex = 50;
     bool active = button->getToggleState();
     //cout >> str >> endl;
@@ -175,5 +230,6 @@ void SimpleFmAudioProcessorEditor::buttonClicked(juce::Button* button)
             audioProcessor.thisVoice->mixerOnSet(i, button->getToggleState());
         }
     }
-    audioProcessor.thisVoice->buttonAssignmentFinished = true;
+    if(audioProcessor.thisVoice->buttonAssignmentFinished == false)
+        audioProcessor.thisVoice->buttonAssignmentFinished = true;
 }

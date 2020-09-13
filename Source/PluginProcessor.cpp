@@ -235,7 +235,8 @@ void SimpleFmAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, juc
                 thisVoice->selectorSet(n, tree.getRawParameterValue("selectorParam" + iStr));
                 thisVoice->mixerSet(n, tree.getRawParameterValue("mixParam" + iStr));
         }
-            thisVoice->parameterAssignmentFinished = true;
+            if(thisVoice->parameterAssignmentFinished == false)
+                thisVoice->parameterAssignmentFinished = true;
     }
     buffer.clear();
     thisSynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());

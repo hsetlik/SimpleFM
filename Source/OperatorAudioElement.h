@@ -34,6 +34,8 @@ struct ParameterValSet
     
     std::atomic<float>* modIndexValues[6];
     std::atomic<float>* modFactorValues[6];
+    double carFrequencies[6];
+    double modFrequencies[6];
     float modOutputSample[6];
     float carOutputSample[6];
     int externalSampleSource[6];
@@ -69,6 +71,7 @@ public:
     void setModSources();
     void calculateCarFrequencies();
     void setCarSamplesToMix();
+    void displayStartInfo();
     float mixerOutputSample();
     
     //all the assignment has to be done by pointer

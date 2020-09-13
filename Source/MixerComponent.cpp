@@ -43,7 +43,7 @@ void MixerComponent::setColorsFromChannel(int channelNum, bool isActive)
 {
     if(isActive && channelNum != 50)
     {
-        printf("changing channel: %d\n", channelNum);
+        //printf("changing channel: %d\n", channelNum);
         levelKnobs[channelNum].setColour(juce::Slider::thumbColourId, juce::Colours::lightseagreen);
         knobLabels[channelNum].setColour(juce::Label::textColourId, juce::Colours::lightseagreen);
     }

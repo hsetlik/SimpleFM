@@ -12,7 +12,6 @@
 #include <JuceHeader.h>
 #include "OperatorAudioElement.h"
 #include "SynthSound.h"
-#include "MixerAudioElement.h"
 
 class SynthVoice : public juce::SynthesiserVoice
 {
@@ -95,6 +94,7 @@ public:
         fundamental = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
         proc.triggerEnvelopes();
         proc.setModLayers();
+        proc.displayStartInfo();
     }
     //=============================================
     void stopNote (float velocity, bool allowTailOff)
@@ -155,17 +155,4 @@ public:
     bool parameterAssignmentFinished = false;
     bool buttonAssignmentFinished = false;
     double fundamental;
-private:
-    
-    maxiOsc carrierOsc;
-    maxiOsc modulatorOsc;
-    maxiEnv carrierEnv;
-    maxiEnv modulatorEnv;
-    //==============================================
-    
-    //===============================================
-    float modFactor;
-    double modulatorPitch;
-    double modIndex;
-    
 };
